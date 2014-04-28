@@ -12,10 +12,24 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"bundle: nil];
+	MenuViewController *leftMenu = (MenuViewController*)[mainStoryboard
+                                                         instantiateViewControllerWithIdentifier: @"MenuViewController"];
+	leftMenu.cellIdentifier = @"leftMenuCell";
+	[SlideNavigationController sharedInstance].leftMenu = leftMenu;
+	
+    id <SlideNavigationContorllerAnimator> revealAnimator;
+    revealAnimator = [[SlideNavigationContorllerAnimatorScale alloc] init];
+    [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
+        [SlideNavigationController sharedInstance].menuRevealAnimator = revealAnimator;
+    }];
+
     return YES;
+    
 }
-							
+
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

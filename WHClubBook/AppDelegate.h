@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SlideNavigationController.h"
+#import "SlideNavigationContorllerAnimatorScale.h"
+#import "MenuViewController.h"
+#import "CommonDataManager.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

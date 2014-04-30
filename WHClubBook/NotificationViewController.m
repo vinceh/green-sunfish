@@ -2,15 +2,17 @@
 //  NotificationViewController.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 28..
+//  Created by yong choi on 2014. 4. 29..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
 #import "NotificationViewController.h"
 
 @interface NotificationViewController ()
-
+- (IBAction)dismiss:(id)sender;
 @end
+
+
 
 @implementation NotificationViewController
 
@@ -46,4 +48,8 @@
 }
 */
 
+- (IBAction)dismiss:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

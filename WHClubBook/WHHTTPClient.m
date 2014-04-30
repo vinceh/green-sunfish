@@ -110,9 +110,6 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
     return signUpTask;
 }
 
-
-
-
 //POST:@"api/users/update?key="""
 //user[email]
 //user[gender]
@@ -158,7 +155,7 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
                                     //            dispatch_async(dispatch_get_main_queue(), ^{
                                     //                completion(responseObject[@"list"], nil);
                                     //            });
-                                }else  {
+                            } else  {
                                     
                                     
                                     NSLog(@" update.msg  %@", responseObject[@"message"]);
@@ -171,11 +168,7 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
                                                                            otherButtonTitles:nil];
                                     // [alert show];
                                     [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
-                                    
-                                    
-                                    
                                 }
-                                
                             }
                             
                         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -187,7 +180,36 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
 }
 
 
+- (NSURLSessionDataTask *)leaveVenue:(NSDictionary*)params completion:( void (^)(NSString *result, NSError *error) )completion  {
+    
+    NSURLSessionDataTask *task = [self POST:@"api/room/leave"
+                                 parameters:params
+                                    success:^(NSURLSessionDataTask *task, id responseObject) {
+                                        NSHTTPURLResponse  *httpResponse = (NSHTTPURLResponse*) task.response;
+                                        NSLog(@" response..leavevenue => %@", httpResponse);
+                                              completion(responseObject[@"success"], nil);
+                                    }failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                        completion(nil, error);
+                                        NSLog(@" response..leaveVenue.error  %@", task.response);
 
+                                }];
+    return task;
+}
+
+- (NSURLSessionDataTask *)enterVenue:(NSDictionary*)params completion:( void (^)(NSString *result, NSError *error) )completion {
+  
+    NSURLSessionDataTask *task = [self POST:@"api/room/enter"
+                                 parameters:params
+                                    success:^(NSURLSessionDataTask *task, id responseObject) {
+                                         NSHTTPURLResponse  *httpResponse = (NSHTTPURLResponse*) task.response;
+                                        NSLog(@" response..entervenue success. => %@", httpResponse);
+                                          completion(responseObject[@"success"], nil);
+                                    }failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                        completion(nil, error);
+                                          NSLog(@" response..enterVenue.error  %@", task.response);
+                                    }];
+    return task;
+}
 
 
 @end

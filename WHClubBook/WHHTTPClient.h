@@ -19,5 +19,7 @@
 - (NSURLSessionDataTask *)getVenueList:(NSDictionary *)params completion:( void (^)(NSArray *results, NSError *error) )completion;
 - (NSURLSessionDataTask *)signUp:(NSDictionary*)params  completion:( void (^)(NSString   *result, NSError *error) )completion;
 - (NSURLSessionDataTask *)update:(NSDictionary*)params completion:( void (^)(NSString *result, NSError *error) )completion;
+- (NSURLSessionDataTask *)leaveVenue:(NSDictionary*)params completion:( void (^)(NSString *result, NSError *error) )completion;
+- (NSURLSessionDataTask *)enterVenue:(NSDictionary*)params completion:( void (^)(NSString *result, NSError *error) )completion;
 
 @end

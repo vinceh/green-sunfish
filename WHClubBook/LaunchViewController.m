@@ -8,7 +8,11 @@
 
 #import "LaunchViewController.h"
 
-@interface LaunchViewController ()
+
+
+@interface LaunchViewController () 
+
+
 
 @end
 
@@ -33,8 +37,11 @@
     
     self.signin.layer.cornerRadius = 30.0f;
     self.signup.layer.cornerRadius = 30.0f;
+
+    
     
 }
+
 
 - (void)didReceiveMemoryWarning
 {

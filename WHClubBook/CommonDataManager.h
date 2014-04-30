@@ -15,6 +15,7 @@
 -(void)setSignUpParameters: (NSArray *) values;
 -(NSDictionary*) signupParameters;
 -(void) setAccessToken:(NSString *) token;
+-(NSString*) accessToken;
 -(void)setMyProfileImage:(UIImage*) myImage;
 -(UIImage*) myImage;
 

@@ -11,6 +11,7 @@
 #import "SlideNavigationContorllerAnimatorScale.h"
 #import "MenuViewController.h"
 #import "CommonDataManager.h"
+#import "NotificationViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

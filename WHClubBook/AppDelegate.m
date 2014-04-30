@@ -12,22 +12,45 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UILocalNotification *locationNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"bundle: nil];
-	MenuViewController *leftMenu = (MenuViewController*)[mainStoryboard
-                                                         instantiateViewControllerWithIdentifier: @"MenuViewController"];
-	leftMenu.cellIdentifier = @"leftMenuCell";
-	[SlideNavigationController sharedInstance].leftMenu = leftMenu;
-	
-    id <SlideNavigationContorllerAnimator> revealAnimator;
-    revealAnimator = [[SlideNavigationContorllerAnimatorScale alloc] init];
-    [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
-        [SlideNavigationController sharedInstance].menuRevealAnimator = revealAnimator;
-    }];
+    if (locationNotification) {
+        application.applicationIconBadgeNumber = 1;
+    } else  {
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"bundle: nil];
+        MenuViewController *leftMenu = (MenuViewController*)[mainStoryboard
+                                                             instantiateViewControllerWithIdentifier: @"MenuViewController"];
+        leftMenu.cellIdentifier = @"leftMenuCell";
+        [SlideNavigationController sharedInstance].leftMenu = leftMenu;
+        
+        id <SlideNavigationContorllerAnimator> revealAnimator;
+        revealAnimator = [[SlideNavigationContorllerAnimatorScale alloc] init];
+        [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
+            [SlideNavigationController sharedInstance].menuRevealAnimator = revealAnimator;
+        }];
+    }
 
-    return YES;
+       return YES;
     
 }
+
+//Local notification
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    if (notification) {
+
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        NotificationViewController   *notiVC = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
+        
+        if ([notification.userInfo[@"key"] isEqualToString:@"I"])  {
+            notiVC.message.text = @"Welcome";
+        }else  {
+            notiVC.message.text = @"Bye";
+        }
+        [self.window.rootViewController presentViewController:notiVC animated:YES completion:nil];
+    }
+}
+
 
 
 - (void)applicationWillResignActive:(UIApplication *)application

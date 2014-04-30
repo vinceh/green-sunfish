@@ -65,7 +65,7 @@ static CommonDataManager *_sharedInstance = nil;
     NSLog(@" write  key==>  %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"myToken"]);
 }
 
--(NSString*) accessToken:(NSString *) token  {
+-(NSString*) accessToken  {
     
     NSLog(@" read  key==>  %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"myToken"]);
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"myToken"];

@@ -14,8 +14,10 @@
 @interface VenueViewController () <ESTBeaconManagerDelegate>
 
 @property (nonatomic, strong) ESTBeaconManager* beaconManager;
-@property (nonatomic, strong) ESTBeaconRegion* region;
+@property (nonatomic, strong) ESTBeaconRegion* beaconRegion;
 
+
+@property (nonatomic, strong) NSArray *beaconsArray;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (weak, nonatomic) IBOutlet VenueTableView *tableView;
 @property(nonatomic, strong) NSMutableArray *venues;
@@ -35,12 +37,7 @@ NSString  *indicator = @"N";
 
 @implementation VenueViewController
 
-
-#pragma mark- initial load view
-
-
 #pragma  mark - Viewcontroller delegate
-
 -(void)viewWillAppear:(BOOL)animated {
     
 }
@@ -60,22 +57,81 @@ NSString  *indicator = @"N";
     
     self.beaconManager = [[ESTBeaconManager alloc] init];
     self.beaconManager.delegate = self;
-    self.beaconManager.avoidUnknownStateBeacons = YES;
-    
-    // create sample region with major value defined
-     self.region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-//                                                                       major:28646 minor:40307
-                                                                  identifier: @"EstimoteSampleRegion"];
     
     
-//    self.region.notifyOnEntry = YES;
-//    self.region.notifyOnExit  = YES;
-//    self.region.notifyEntryStateOnDisplay = YES;
-    [self.beaconManager startRangingBeaconsInRegion:self.region];
-    [self.beaconManager startMonitoringForRegion:self.region];
-    [self.beaconManager requestStateForRegion:self.region];
+    self.beaconRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
+                                                            identifier:@"EstimoteSampleRegion"];
+    
+    [self.beaconManager startRangingBeaconsInRegion:self.beaconRegion];
+    
+    
+    self.beaconRegion.notifyOnEntry = YES;
+    self.beaconRegion.notifyOnExit = YES;
+    
+    [self.beaconManager startMonitoringForRegion:self.beaconRegion];
+
 
 }
+
+#pragma mark - ESTBeaconManager delegate
+- (void)beaconManager:(ESTBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region
+{
+    NSLog(@"  %s", __func__);
+    
+    self.beaconsArray = beacons;
+    if([self.beaconsArray count] > 0 )  {
+        NSLog(@" found beacon");
+        
+        [self.beaconsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            //            ESTBeacon  *beacon = obj;
+            NSLog(@" UUID  %@", ((ESTBeacon*)obj).proximityUUID);
+            NSLog(@" major  %@", ((ESTBeacon*)obj).major);
+        }];
+    };
+    
+}
+
+
+
+-(void) beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(ESTBeaconRegion *)region {
+    NSLog(@"  %s", __func__);
+    
+    if(state == CLRegionStateInside)
+    {
+        NSLog(@" didTermineState . Inside");
+    }
+    else if(state == CLRegionStateOutside)
+    {
+        NSLog(@" didTermineState . Outside");
+    }else if (state == CLRegionStateUnknown) {
+        
+        NSLog(@" didTermineState .Unknown");
+    }
+}
+- (void)beaconManager:(ESTBeaconManager *)manager didEnterRegion:(ESTBeaconRegion *)region
+{
+    NSLog(@"  %s", __func__);
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"Beta2.0 IN";
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+}
+
+- (void)beaconManager:(ESTBeaconManager *)manager didExitRegion:(ESTBeaconRegion *)region
+{
+    NSLog(@"  %s", __func__);
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"Beta2.0 OUT";
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+}
+
+
+-(void)  dealloc {
+    [self.beaconManager stopRangingBeaconsInRegion:self.beaconRegion];
+}
+
+
 
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -84,85 +140,6 @@ NSString  *indicator = @"N";
 }
 
 
--(void)beaconManager:(ESTBeaconManager *)manager
-     didRangeBeacons:(NSArray *)beacons
-            inRegion:(ESTBeaconRegion *)region
-{
-    
-   NSLog(@"  %s", __func__);
-    if ([beacons count] > 0) {
-    NSLog(@" beacin identity.rssi  = %ld", [beacons[0] rssi]);
-    NSLog(@" beacin identity.major  = %@", [beacons[0] major]);
-    NSLog(@" beacin identity.minor  = %@", [beacons[0] minor]);
- //    [self.beaconManager stopRangingBeaconsInRegion:self.region];
-    }
-    
-}
-
--(void)beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(ESTBeaconRegion *)region
-{
-    NSLog(@"  %s", __func__);
-    if(state == CLRegionStateInside)
-    {
-        NSLog(@"  didDetermine inSide");
-    }
-    else if( state == CLRegionStateOutside)
-    {
-        NSLog(@"  didDetermine outside");
-    }
-    else if (state == CLRegionStateUnknown)  {
-        NSLog(@"  didDetermine unknow");
-    }
-
-}
-
--(void)beaconManager:(ESTBeaconManager *)manager didEnterRegion:(ESTBeaconRegion *)region
-{
-    NSLog(@"  %s", __func__);
-    
-    NSDictionary  *myAccessToken1 = @{@"key": [[CommonDataManager sharedInstance] accessToken]};
-    NSDictionary  *myAccessToken = @{@"key": [[CommonDataManager sharedInstance] accessToken],@"beacon_key":@"B9407F30-F5F8-466E-AFF9-25556B57FE6D2864640307"};
-    NSLog(@" my access key = %@", myAccessToken1);
-    [[WHHTTPClient sharedClient] enterVenue:myAccessToken completion:^(NSString *result, NSError *error) {
-        if(!error)  {
-            NSLog(@" server update successfullly  enter ....");
-            indicator = @"Y";
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            notification.alertBody = @"Welcome";
-            notification.alertAction = @"View";
-            notification.soundName = UILocalNotificationDefaultSoundName;
-//          notification.userInfo  = @{@"key":@"I"};
-            [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-
-        }
-    }];
-}
-
--(void)beaconManager:(ESTBeaconManager *)manager  didExitRegion:(ESTBeaconRegion *)region
-
-{
-    
-    NSLog(@"  %s", __func__);
-    
-    NSDictionary  *myAccessToken1 = @{@"key": [[CommonDataManager sharedInstance] accessToken]};
-    NSDictionary  *myAccessToken = @{@"key": [[CommonDataManager sharedInstance] accessToken],@"beacon_key":@"B9407F30-F5F8-466E-AFF9-25556B57FE6D2864640307"};
-
-    NSLog(@" my access key = %@", myAccessToken1);
-
-    if([indicator isEqualToString:@"Y"])  {
-        
-        [[WHHTTPClient sharedClient] leaveVenue:myAccessToken completion:^(NSString *result, NSError *error) {
-            
-            if(!error)  {
-                
-                NSLog(@" server update successfullly leave ....");
-
-            }
-        }];
-        
-    }
-    
-}
 
 
 -(void) viewWillLayoutSubviews  {
@@ -319,14 +296,6 @@ NSString  *indicator = @"N";
             [self requestToServer];  //with my list..
             break;
     }
-}
-
--(void)dealloc {
-    
-    NSLog(@" %s", __func__);
-    
-    [self.beaconManager stopRangingBeaconsInRegion:self.region];
-
 }
 
 #pragma mark - SlideNavigationController Methods -

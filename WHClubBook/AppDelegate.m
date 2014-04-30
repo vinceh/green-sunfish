@@ -12,8 +12,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    
+    if(remoteNotification != nil)
+    {
+        [self application:application didFinishLaunchingWithOptions:remoteNotification];
+    }
+    
     UILocalNotification *locationNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-
+    
     if (locationNotification) {
         application.applicationIconBadgeNumber = 1;
     } else  {
@@ -28,10 +36,14 @@
         [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
             [SlideNavigationController sharedInstance].menuRevealAnimator = revealAnimator;
         }];
+        
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+                                                                             UIRemoteNotificationTypeAlert|
+                                                                             UIRemoteNotificationTypeBadge|
+                                                                             UIRemoteNotificationTypeSound];
     }
 
        return YES;
-    
 }
 
 //Local notification
@@ -51,6 +63,28 @@
     }
 }
 
+
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
+
+
+    // device token registration
+    NSMutableString *token = [NSMutableString string];
+    const unsigned char* ptr = (const unsigned char*) [newDeviceToken bytes];
+    
+    for(int i = 0 ; i < 32 ; i++)
+    {
+        [token appendFormat:@"%02x", ptr[i]];
+    }
+    NSLog(@" token  ===> %@", token);
+
+}
+-(void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    
+}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application

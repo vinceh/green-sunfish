@@ -49,8 +49,8 @@
 		3128A965190B2BE4002E8F92 /* EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A964190B2BE4002E8F92 /* EditViewController.m */; };
 		3128A97F190CDD6E002E8F92 /* CommonDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A97E190CDD6E002E8F92 /* CommonDataManager.m */; };
 		3128A982190D200D002E8F92 /* VenueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A981190D200C002E8F92 /* VenueViewController.m */; };
-		318E4CC5190F83CE002DAD65 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 318E4CC4190F83CE002DAD65 /* libEstimoteSDK.a */; };
 		318E4CCB19103FBB002DAD65 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4CCA19103FBB002DAD65 /* NotificationViewController.m */; };
+		318E4CD11911A287002DAD65 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 318E4CD01911A287002DAD65 /* libEstimoteSDK.a */; };
 		31A9884F190E42210060624C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9884E190E42210060624C /* ChatViewController.m */; };
 		31A98852190E42730060624C /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98851190E42720060624C /* AboutViewController.m */; };
 		31A98924190EE73C0060624C /* GBPathImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98923190EE73C0060624C /* GBPathImageView.m */; };
@@ -80,7 +80,6 @@
 		31A9896F190EE8720060624C /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9896C190EE8720060624C /* AFHTTPRequestOperation.m */; };
 		31A98970190EE8720060624C /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9896E190EE8720060624C /* AFHTTPRequestOperationManager.m */; };
 		31A98973190EE8940060624C /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98972190EE8940060624C /* UIAlertView+Blocks.m */; };
-		31A9897B190F0FB30060624C /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9897A190F0FB30060624C /* NotificationManager.m */; };
 		31A98986190F22BC0060624C /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A98985190F22BC0060624C /* AdSupport.framework */; };
 /* End PBXBuildFile section */
 
@@ -160,14 +159,15 @@
 		3128A97E190CDD6E002E8F92 /* CommonDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonDataManager.m; sourceTree = "<group>"; };
 		3128A980190D200C002E8F92 /* VenueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenueViewController.h; sourceTree = "<group>"; };
 		3128A981190D200C002E8F92 /* VenueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenueViewController.m; sourceTree = "<group>"; };
-		318E4CBF190F82F3002DAD65 /* ESTBeacon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeacon.h; sourceTree = "<group>"; };
-		318E4CC0190F82F3002DAD65 /* ESTBeaconDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconDefinitions.h; sourceTree = "<group>"; };
-		318E4CC1190F82F3002DAD65 /* ESTBeaconManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
-		318E4CC2190F82F3002DAD65 /* ESTBeaconRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
-		318E4CC3190F82F3002DAD65 /* ESTBeaconUpdateInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconUpdateInfo.h; sourceTree = "<group>"; };
-		318E4CC4190F83CE002DAD65 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = "../../../Downloads/iOS-SDK-master/EstimoteSDK/libEstimoteSDK.a"; sourceTree = "<group>"; };
 		318E4CC919103FBB002DAD65 /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
 		318E4CCA19103FBB002DAD65 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		318E4CD01911A287002DAD65 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = "../../../Downloads/iOS-SDK-2.0beta copy/EstimoteSDK/libEstimoteSDK.a"; sourceTree = "<group>"; };
+		318E4CD21911A2A1002DAD65 /* ESTBeacon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeacon.h; sourceTree = "<group>"; };
+		318E4CD31911A2A1002DAD65 /* ESTBeaconDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconDefinitions.h; sourceTree = "<group>"; };
+		318E4CD41911A2A1002DAD65 /* ESTBeaconFirmwareInfoVO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconFirmwareInfoVO.h; sourceTree = "<group>"; };
+		318E4CD51911A2A1002DAD65 /* ESTBeaconFirmwareVO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconFirmwareVO.h; sourceTree = "<group>"; };
+		318E4CD61911A2A1002DAD65 /* ESTBeaconManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
+		318E4CD71911A2A1002DAD65 /* ESTBeaconRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
 		31A9884D190E42210060624C /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		31A9884E190E42210060624C /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		31A98850190E42720060624C /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -227,8 +227,6 @@
 		31A9896E190EE8720060624C /* AFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperationManager.m; path = "Third Party lib/AFNetworking(2.0)/AFHTTPRequestOperationManager.m"; sourceTree = "<group>"; };
 		31A98971190EE8940060624C /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+Blocks.h"; path = "Third Party lib/UIkit+AFNetworking/UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		31A98972190EE8940060624C /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIAlertView+Blocks.m"; path = "Third Party lib/UIkit+AFNetworking/UIAlertView+Blocks.m"; sourceTree = "<group>"; };
-		31A98979190F0FB30060624C /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
-		31A9897A190F0FB30060624C /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		31A98985190F22BC0060624C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -237,7 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				318E4CC5190F83CE002DAD65 /* libEstimoteSDK.a in Frameworks */,
+				318E4CD11911A287002DAD65 /* libEstimoteSDK.a in Frameworks */,
 				31A98986190F22BC0060624C /* AdSupport.framework in Frameworks */,
 				3128A7DD19083E47002E8F92 /* CoreGraphics.framework in Frameworks */,
 				3128A7DF19083E47002E8F92 /* UIKit.framework in Frameworks */,
@@ -280,7 +278,7 @@
 		3128A7D919083E47002E8F92 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				318E4CC4190F83CE002DAD65 /* libEstimoteSDK.a */,
+				318E4CD01911A287002DAD65 /* libEstimoteSDK.a */,
 				31A98985190F22BC0060624C /* AdSupport.framework */,
 				3128A7DA19083E47002E8F92 /* Foundation.framework */,
 				3128A7DC19083E47002E8F92 /* CoreGraphics.framework */,
@@ -409,8 +407,6 @@
 				31A9884E190E42210060624C /* ChatViewController.m */,
 				31A98850190E42720060624C /* AboutViewController.h */,
 				31A98851190E42720060624C /* AboutViewController.m */,
-				31A98979190F0FB30060624C /* NotificationManager.h */,
-				31A9897A190F0FB30060624C /* NotificationManager.m */,
 				318E4CC919103FBB002DAD65 /* NotificationViewController.h */,
 				318E4CCA19103FBB002DAD65 /* NotificationViewController.m */,
 			);
@@ -611,11 +607,12 @@
 		31A9897C190F0FCD0060624C /* IBeacon */ = {
 			isa = PBXGroup;
 			children = (
-				318E4CBF190F82F3002DAD65 /* ESTBeacon.h */,
-				318E4CC0190F82F3002DAD65 /* ESTBeaconDefinitions.h */,
-				318E4CC1190F82F3002DAD65 /* ESTBeaconManager.h */,
-				318E4CC2190F82F3002DAD65 /* ESTBeaconRegion.h */,
-				318E4CC3190F82F3002DAD65 /* ESTBeaconUpdateInfo.h */,
+				318E4CD21911A2A1002DAD65 /* ESTBeacon.h */,
+				318E4CD31911A2A1002DAD65 /* ESTBeaconDefinitions.h */,
+				318E4CD41911A2A1002DAD65 /* ESTBeaconFirmwareInfoVO.h */,
+				318E4CD51911A2A1002DAD65 /* ESTBeaconFirmwareVO.h */,
+				318E4CD61911A2A1002DAD65 /* ESTBeaconManager.h */,
+				318E4CD71911A2A1002DAD65 /* ESTBeaconRegion.h */,
 			);
 			name = IBeacon;
 			sourceTree = "<group>";
@@ -668,6 +665,7 @@
 				ORGANIZATIONNAME = whispr;
 				TargetAttributes = {
 					3128A7D619083E47002E8F92 = {
+						DevelopmentTeam = 5RJR366NDM;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -767,7 +765,6 @@
 				31A98958190EE7F50060624C /* AFSecurityPolicy.m in Sources */,
 				3128A8C219084462002E8F92 /* MenuViewController.m in Sources */,
 				31A98967190EE8430060624C /* AFHTTPSessionManager.m in Sources */,
-				31A9897B190F0FB30060624C /* NotificationManager.m in Sources */,
 				3128A8EA19090317002E8F92 /* PhotoUploadViewController.m in Sources */,
 				31A98936190EE78E0060624C /* SlideNavigationContorllerAnimatorSlide.m in Sources */,
 				3128A9381909A271002E8F92 /* PushCustomSegue.m in Sources */,
@@ -851,7 +848,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.whispr.WHClubBook";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -889,7 +886,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.whispr.WHClubBook";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -911,6 +908,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WHClubBook/WHClubBook-Prefix.pch";
 				INFOPLIST_FILE = "WHClubBook/WHClubBook-Info.plist";
@@ -919,8 +918,12 @@
 					"/Users/jk6803/Documents/ClubProj/iOS-SDK-2.0beta/EstimoteSDK",
 					/Users/jk6803/Documents/working/Ibeacon/Estimote/EstimoteSDK,
 					"/Users/jk6803/Downloads/iOS-SDK-master/EstimoteSDK",
+					"/Users/jk6803/Downloads/iOS-SDK-2.0beta/EstimoteSDK",
+					"/Users/jk6803/Downloads/iOS-SDK-2.0beta",
+					copy/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -930,6 +933,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WHClubBook/WHClubBook-Prefix.pch";
 				INFOPLIST_FILE = "WHClubBook/WHClubBook-Info.plist";
@@ -938,8 +943,12 @@
 					"/Users/jk6803/Documents/ClubProj/iOS-SDK-2.0beta/EstimoteSDK",
 					/Users/jk6803/Documents/working/Ibeacon/Estimote/EstimoteSDK,
 					"/Users/jk6803/Downloads/iOS-SDK-master/EstimoteSDK",
+					"/Users/jk6803/Downloads/iOS-SDK-2.0beta/EstimoteSDK",
+					"/Users/jk6803/Downloads/iOS-SDK-2.0beta",
+					copy/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

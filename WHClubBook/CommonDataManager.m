@@ -38,14 +38,12 @@ static CommonDataManager *_sharedInstance = nil;
                                 @"user[first_name]":values[3],
                                 @"user[last_initial]":values[4]};
     
-    
     NSLog(@" sign  %@", self.signUp);
 
 }
 
 -(NSDictionary*) signupParameters {
     
-        NSLog(@" befire return sign  %@", self.signUp);
     return self.signUp;
 }
 

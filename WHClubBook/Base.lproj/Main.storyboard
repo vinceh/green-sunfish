@@ -110,7 +110,7 @@
             </objects>
             <point key="canvasLocation" x="-6918" y="-4890"/>
         </scene>
-        <!--Chat View Controller-->
+        <!--Chat View Controller - Item-->
         <scene sceneID="bM1-ox-8QI">
             <objects>
                 <viewController storyboardIdentifier="ChatViewController" id="1a1-J2-fiv" customClass="ChatViewController" sceneMemberID="viewController">
@@ -128,13 +128,25 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C17-ea-xgh">
+                                <rect key="frame" x="0.0" y="517" width="320" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <tabBarItem title="chat" id="75S-JR-L9I"/>
+                                    <tabBarItem title="people" id="ReN-WU-xO3"/>
+                                    <tabBarItem title="Venue" id="PFE-Fo-WGD"/>
+                                    <tabBarItem title="Me" id="qcu-Nl-2LJ"/>
+                                </items>
+                            </tabBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="HeP-FM-OhF"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FUi-cC-bh2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6495" y="-4879"/>
+            <point key="canvasLocation" x="-5461" y="-5114"/>
         </scene>
         <!--About View Controller-->
         <scene sceneID="4xs-kD-RnU">
@@ -160,7 +172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7IK-gf-6pa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6099" y="-4873"/>
+            <point key="canvasLocation" x="-4521" y="-4873"/>
         </scene>
         <!--Notification View Controller-->
         <scene sceneID="7lO-qJ-sAV">
@@ -221,7 +233,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4ID-Z5-EBg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5841" y="-5155"/>
+            <point key="canvasLocation" x="-4047" y="-5217"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="gO9-Vq-0qp">
@@ -273,7 +285,7 @@
                                 </state>
                                 <connections>
                                     <action selector="register:" destination="ya5-eE-i4I" eventType="touchUpInside" id="ENz-Gb-eZO"/>
-                                    <segue destination="1PD-HW-zyR" kind="push" identifier="photoSegue" id="Upw-Ny-2iD"/>
+                                    <segue destination="1PD-HW-zyR" kind="push" id="iNm-ca-iz1"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -291,7 +303,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZcH-ps-Onc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6913" y="-5574"/>
+            <point key="canvasLocation" x="-6387" y="-5574"/>
         </scene>
         <!--Photo Upload View Controller - Photo-->
         <scene sceneID="7az-0j-Xgc">
@@ -319,7 +331,7 @@
                                 </state>
                                 <connections>
                                     <action selector="register:" destination="1PD-HW-zyR" eventType="touchUpInside" id="gHt-TM-N5L"/>
-                                    <segue destination="wuc-2B-8fa" kind="push" identifier="photoSegue" id="qI0-J3-a9Q"/>
+                                    <segue destination="wuc-2B-8fa" kind="push" identifier="venueSegue" id="IRS-EC-xJp"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c2i-aj-DF0">
@@ -379,7 +391,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bBK-uc-4FX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6507" y="-5562"/>
+            <point key="canvasLocation" x="-5895" y="-5562"/>
         </scene>
         <!--Launch View Controller-->
         <scene sceneID="ved-3y-OTp">
@@ -427,7 +439,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="INZ-lm-ruO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7430" y="-5972"/>
+            <point key="canvasLocation" x="-6904" y="-5972"/>
         </scene>
         <!--Sign In View Controller-->
         <scene sceneID="CCW-kp-iMT">
@@ -469,7 +481,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tNg-8j-Txr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6913" y="-6234"/>
+            <point key="canvasLocation" x="-6387" y="-6234"/>
         </scene>
         <!--Venue View Controller-->
         <scene sceneID="OGu-oW-5Sy">
@@ -532,7 +544,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4id-6c-aZe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5961" y="-6239"/>
+            <point key="canvasLocation" x="-5435" y="-6239"/>
         </scene>
         <!--Venue Detailed View Controller-->
         <scene sceneID="AVJ-aB-Rdi">
@@ -603,12 +615,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dyQ-q1-iFC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5536" y="-6248"/>
+            <point key="canvasLocation" x="-5010" y="-6248"/>
         </scene>
-        <!--Slide Navigation Controller-->
+        <!--Slide Navigation Controller - Item-->
         <scene sceneID="UPQ-G9-VhS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Yco-oe-hJZ" customClass="SlideNavigationController" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="gty-TT-0JV"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIl-Ox-Tsr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -621,7 +634,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0b8-OS-KVF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7967" y="-5940"/>
+            <point key="canvasLocation" x="-7441" y="-5940"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

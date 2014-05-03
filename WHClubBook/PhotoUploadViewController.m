@@ -141,7 +141,7 @@
 - (IBAction)register:(id)sender {
     
     [self.activityIndicator startAnimating];
-    NSDictionary  *params = [[CommonDataManager sharedInstance] signupParameters];
+    NSDictionary *params = [[CommonDataManager sharedInstance] signupParameters];
     NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params completion:^(NSString *result, NSError *error) {
 
         if(!error) {

@@ -13,7 +13,11 @@
 #import "CommonDataManager.h"
 #import "NotificationViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import <CoreLocation/CoreLocation.h>
+#import "ESTBeaconManager.h"
+
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate,ESTBeaconManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

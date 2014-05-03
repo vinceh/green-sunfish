@@ -31,21 +31,16 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
 
                                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
                                        if (httpResponse.statusCode == 200) {
-                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               NSLog(@"  respomse....  %@", responseObject);
                                                completion(responseObject[@"list"], nil);
-                                           });
                                        } else {
-                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                               completion(nil, nil);
-                                           });
+                                           completion(nil, nil);
                                            NSLog(@"Received: %@", responseObject);
                                            NSLog(@"Received HTTP %ld", httpResponse.statusCode);
                                        }
                                        
                                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                       dispatch_async(dispatch_get_main_queue(), ^{
                                            completion(nil, error);
-                                       });
                                    }];
     return task;
     
@@ -110,6 +105,9 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
     return signUpTask;
 }
 
+
+
+
 //POST:@"api/users/update?key="""
 //user[email]
 //user[gender]
@@ -155,7 +153,7 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
                                     //            dispatch_async(dispatch_get_main_queue(), ^{
                                     //                completion(responseObject[@"list"], nil);
                                     //            });
-                            } else  {
+                                }else  {
                                     
                                     
                                     NSLog(@" update.msg  %@", responseObject[@"message"]);
@@ -168,7 +166,11 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
                                                                            otherButtonTitles:nil];
                                     // [alert show];
                                     [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
+                                    
+                                    
+                                    
                                 }
+                                
                             }
                             
                         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -187,29 +189,34 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
                                     success:^(NSURLSessionDataTask *task, id responseObject) {
                                         NSHTTPURLResponse  *httpResponse = (NSHTTPURLResponse*) task.response;
                                         NSLog(@" response..leavevenue => %@", httpResponse);
-                                              completion(responseObject[@"success"], nil);
+                                        completion(responseObject[@"success"], nil);
                                     }failure:^(NSURLSessionDataTask *task, NSError *error) {
                                         completion(nil, error);
                                         NSLog(@" response..leaveVenue.error  %@", task.response);
-
-                                }];
+                                        
+                                    }];
     return task;
 }
 
 - (NSURLSessionDataTask *)enterVenue:(NSDictionary*)params completion:( void (^)(NSString *result, NSError *error) )completion {
-  
+    
     NSURLSessionDataTask *task = [self POST:@"api/room/enter"
                                  parameters:params
                                     success:^(NSURLSessionDataTask *task, id responseObject) {
-                                         NSHTTPURLResponse  *httpResponse = (NSHTTPURLResponse*) task.response;
+                                        NSHTTPURLResponse  *httpResponse = (NSHTTPURLResponse*) task.response;
                                         NSLog(@" response..entervenue success. => %@", httpResponse);
-                                          completion(responseObject[@"success"], nil);
+                                        completion(responseObject[@"success"], nil);
                                     }failure:^(NSURLSessionDataTask *task, NSError *error) {
                                         completion(nil, error);
-                                          NSLog(@" response..enterVenue.error  %@", task.response);
+                                        NSLog(@" response..enterVenue.error  %@", task.response);
                                     }];
     return task;
 }
+
+
+
+
+
 
 
 @end

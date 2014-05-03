@@ -7,33 +7,22 @@
 //
 
 #import "VenueViewController.h"
-#import "ESTBeaconManager.h"
 
 
 
-@interface VenueViewController () <ESTBeaconManagerDelegate>
+@interface VenueViewController ()
 
-@property (nonatomic, strong) ESTBeaconManager* beaconManager;
-@property (nonatomic, strong) ESTBeaconRegion* beaconRegion;
-
-
-@property (nonatomic, strong) NSArray *beaconsArray;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (weak, nonatomic) IBOutlet VenueTableView *tableView;
 @property(nonatomic, strong) NSMutableArray *venues;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) CLGeocoder *geocoder;
 
-
-
-
 - (IBAction)selectVenue:(UISegmentedControl *)sender;
-
 
 @end
 
 static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
-NSString  *indicator = @"N";
 
 @implementation VenueViewController
 
@@ -52,83 +41,6 @@ NSString  *indicator = @"N";
     [self.tableView registerNib:[UINib nibWithNibName:@"VenueTableViewCell" bundle:nil] forCellReuseIdentifier:VenueViewCellIdentifier];
     [self requestToServer];
     
-    NSLog(@" ibeacon start");
-    
-    
-    self.beaconManager = [[ESTBeaconManager alloc] init];
-    self.beaconManager.delegate = self;
-    
-    
-    self.beaconRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-                                                            identifier:@"EstimoteSampleRegion"];
-    
-    [self.beaconManager startRangingBeaconsInRegion:self.beaconRegion];
-    
-    
-    self.beaconRegion.notifyOnEntry = YES;
-    self.beaconRegion.notifyOnExit = YES;
-    
-    [self.beaconManager startMonitoringForRegion:self.beaconRegion];
-
-
-}
-
-#pragma mark - ESTBeaconManager delegate
-- (void)beaconManager:(ESTBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region
-{
-    NSLog(@"  %s", __func__);
-    
-    self.beaconsArray = beacons;
-    if([self.beaconsArray count] > 0 )  {
-        NSLog(@" found beacon");
-        
-        [self.beaconsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            //            ESTBeacon  *beacon = obj;
-            NSLog(@" UUID  %@", ((ESTBeacon*)obj).proximityUUID);
-            NSLog(@" major  %@", ((ESTBeacon*)obj).major);
-        }];
-    };
-    
-}
-
-
-
--(void) beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(ESTBeaconRegion *)region {
-    NSLog(@"  %s", __func__);
-    
-    if(state == CLRegionStateInside)
-    {
-        NSLog(@" didTermineState . Inside");
-    }
-    else if(state == CLRegionStateOutside)
-    {
-        NSLog(@" didTermineState . Outside");
-    }else if (state == CLRegionStateUnknown) {
-        
-        NSLog(@" didTermineState .Unknown");
-    }
-}
-- (void)beaconManager:(ESTBeaconManager *)manager didEnterRegion:(ESTBeaconRegion *)region
-{
-    NSLog(@"  %s", __func__);
-    UILocalNotification *notification = [UILocalNotification new];
-    notification.alertBody = @"Beta2.0 IN";
-    
-    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-}
-
-- (void)beaconManager:(ESTBeaconManager *)manager didExitRegion:(ESTBeaconRegion *)region
-{
-    NSLog(@"  %s", __func__);
-    UILocalNotification *notification = [UILocalNotification new];
-    notification.alertBody = @"Beta2.0 OUT";
-    
-    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-}
-
-
--(void)  dealloc {
-    [self.beaconManager stopRangingBeaconsInRegion:self.beaconRegion];
 }
 
 
@@ -138,9 +50,6 @@ NSString  *indicator = @"N";
     NSLog(@"  %s", __func__);
 
 }
-
-
-
 
 -(void) viewWillLayoutSubviews  {
     self.tableView.frame = CGRectMake(0, self.topLayoutGuide.length + 52,CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
@@ -226,7 +135,8 @@ NSString  *indicator = @"N";
 -(void) requestToServer {
     
     [self.activityIndicator startAnimating];
-    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] getVenueList:nil completion:^(NSArray *results, NSError *error) {
+    NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken]};
+    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] getVenueList:params completion:^(NSArray *results, NSError *error) {
         if (!error) {
             //   [self.venues removeAllObjects];
             self.venues = [NSMutableArray arrayWithArray:results];
@@ -240,11 +150,9 @@ NSString  *indicator = @"N";
     
 }
 
-
 -(void) addMyfavorite:(id)sender  {
     
 }
-
 
 - (void) coordinates:(NSString*) clubAddress  {
     

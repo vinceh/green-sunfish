@@ -37,8 +37,6 @@
 		3128A8A519084352002E8F92 /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A8A319084352002E8F92 /* LaunchViewController.m */; };
 		3128A8C219084462002E8F92 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A8C119084462002E8F92 /* MenuViewController.m */; };
 		3128A8E41908F13E002E8F92 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A8E31908F13E002E8F92 /* SignUpViewController.m */; };
-		3128A8E71908F5A4002E8F92 /* WHHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A8E61908F5A4002E8F92 /* WHHTTPClient.m */; };
-		3128A8EA19090317002E8F92 /* PhotoUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A8E919090317002E8F92 /* PhotoUploadViewController.m */; };
 		3128A9381909A271002E8F92 /* PushCustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A9371909A271002E8F92 /* PushCustomSegue.m */; };
 		3128A9441909ECF4002E8F92 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A9431909ECF4002E8F92 /* SettingViewController.m */; };
 		3128A95A190B077A002E8F92 /* PhotoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A958190B077A002E8F92 /* PhotoViewCell.m */; };
@@ -50,7 +48,9 @@
 		3128A97F190CDD6E002E8F92 /* CommonDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A97E190CDD6E002E8F92 /* CommonDataManager.m */; };
 		3128A982190D200D002E8F92 /* VenueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3128A981190D200C002E8F92 /* VenueViewController.m */; };
 		318E4CCB19103FBB002DAD65 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4CCA19103FBB002DAD65 /* NotificationViewController.m */; };
-		318E4CD11911A287002DAD65 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 318E4CD01911A287002DAD65 /* libEstimoteSDK.a */; };
+		318E4D32191363FC002DAD65 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 318E4D31191363FC002DAD65 /* libEstimoteSDK.a */; };
+		318E4D47191487CE002DAD65 /* WHHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4D46191487CE002DAD65 /* WHHTTPClient.m */; };
+		318E4D49191487E8002DAD65 /* PhotoUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4D48191487E8002DAD65 /* PhotoUploadViewController.m */; };
 		31A9884F190E42210060624C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9884E190E42210060624C /* ChatViewController.m */; };
 		31A98852190E42730060624C /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98851190E42720060624C /* AboutViewController.m */; };
 		31A98924190EE73C0060624C /* GBPathImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98923190EE73C0060624C /* GBPathImageView.m */; };
@@ -137,10 +137,7 @@
 		3128A8C119084462002E8F92 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		3128A8E21908F13E002E8F92 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		3128A8E31908F13E002E8F92 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
-		3128A8E51908F5A4002E8F92 /* WHHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHHTTPClient.h; sourceTree = "<group>"; };
-		3128A8E61908F5A4002E8F92 /* WHHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHHTTPClient.m; sourceTree = "<group>"; };
 		3128A8E819090317002E8F92 /* PhotoUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoUploadViewController.h; sourceTree = "<group>"; };
-		3128A8E919090317002E8F92 /* PhotoUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoUploadViewController.m; sourceTree = "<group>"; };
 		3128A9361909A271002E8F92 /* PushCustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushCustomSegue.h; sourceTree = "<group>"; };
 		3128A9371909A271002E8F92 /* PushCustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushCustomSegue.m; sourceTree = "<group>"; };
 		3128A9421909ECF4002E8F92 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -161,13 +158,16 @@
 		3128A981190D200C002E8F92 /* VenueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenueViewController.m; sourceTree = "<group>"; };
 		318E4CC919103FBB002DAD65 /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
 		318E4CCA19103FBB002DAD65 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
-		318E4CD01911A287002DAD65 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = "../../../Downloads/iOS-SDK-2.0beta copy/EstimoteSDK/libEstimoteSDK.a"; sourceTree = "<group>"; };
-		318E4CD21911A2A1002DAD65 /* ESTBeacon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeacon.h; sourceTree = "<group>"; };
-		318E4CD31911A2A1002DAD65 /* ESTBeaconDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconDefinitions.h; sourceTree = "<group>"; };
-		318E4CD41911A2A1002DAD65 /* ESTBeaconFirmwareInfoVO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconFirmwareInfoVO.h; sourceTree = "<group>"; };
-		318E4CD51911A2A1002DAD65 /* ESTBeaconFirmwareVO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconFirmwareVO.h; sourceTree = "<group>"; };
-		318E4CD61911A2A1002DAD65 /* ESTBeaconManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
-		318E4CD71911A2A1002DAD65 /* ESTBeaconRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
+		318E4D31191363FC002DAD65 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEstimoteSDK.a; sourceTree = "<group>"; };
+		318E4D331913640C002DAD65 /* ESTBeacon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeacon.h; sourceTree = "<group>"; };
+		318E4D341913640C002DAD65 /* ESTBeaconDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconDefinitions.h; sourceTree = "<group>"; };
+		318E4D351913640C002DAD65 /* ESTBeaconFirmwareInfoVO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconFirmwareInfoVO.h; sourceTree = "<group>"; };
+		318E4D361913640C002DAD65 /* ESTBeaconFirmwareVO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconFirmwareVO.h; sourceTree = "<group>"; };
+		318E4D371913640C002DAD65 /* ESTBeaconManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
+		318E4D381913640C002DAD65 /* ESTBeaconRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
+		318E4D45191487CE002DAD65 /* WHHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHHTTPClient.h; sourceTree = "<group>"; };
+		318E4D46191487CE002DAD65 /* WHHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHHTTPClient.m; sourceTree = "<group>"; };
+		318E4D48191487E8002DAD65 /* PhotoUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoUploadViewController.m; sourceTree = "<group>"; };
 		31A9884D190E42210060624C /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		31A9884E190E42210060624C /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		31A98850190E42720060624C /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -235,11 +235,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				318E4CD11911A287002DAD65 /* libEstimoteSDK.a in Frameworks */,
 				31A98986190F22BC0060624C /* AdSupport.framework in Frameworks */,
 				3128A7DD19083E47002E8F92 /* CoreGraphics.framework in Frameworks */,
 				3128A7DF19083E47002E8F92 /* UIKit.framework in Frameworks */,
 				3128A7DB19083E47002E8F92 /* Foundation.framework in Frameworks */,
+				318E4D32191363FC002DAD65 /* libEstimoteSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +278,7 @@
 		3128A7D919083E47002E8F92 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				318E4CD01911A287002DAD65 /* libEstimoteSDK.a */,
+				318E4D31191363FC002DAD65 /* libEstimoteSDK.a */,
 				31A98985190F22BC0060624C /* AdSupport.framework */,
 				3128A7DA19083E47002E8F92 /* Foundation.framework */,
 				3128A7DC19083E47002E8F92 /* CoreGraphics.framework */,
@@ -355,8 +355,8 @@
 		3128A81119083EBB002E8F92 /* HTTP client */ = {
 			isa = PBXGroup;
 			children = (
-				3128A8E51908F5A4002E8F92 /* WHHTTPClient.h */,
-				3128A8E61908F5A4002E8F92 /* WHHTTPClient.m */,
+				318E4D45191487CE002DAD65 /* WHHTTPClient.h */,
+				318E4D46191487CE002DAD65 /* WHHTTPClient.m */,
 			);
 			name = "HTTP client";
 			sourceTree = "<group>";
@@ -396,7 +396,7 @@
 				3128A8E21908F13E002E8F92 /* SignUpViewController.h */,
 				3128A8E31908F13E002E8F92 /* SignUpViewController.m */,
 				3128A8E819090317002E8F92 /* PhotoUploadViewController.h */,
-				3128A8E919090317002E8F92 /* PhotoUploadViewController.m */,
+				318E4D48191487E8002DAD65 /* PhotoUploadViewController.m */,
 				3128A9421909ECF4002E8F92 /* SettingViewController.h */,
 				3128A9431909ECF4002E8F92 /* SettingViewController.m */,
 				3128A963190B2BE4002E8F92 /* EditViewController.h */,
@@ -607,12 +607,12 @@
 		31A9897C190F0FCD0060624C /* IBeacon */ = {
 			isa = PBXGroup;
 			children = (
-				318E4CD21911A2A1002DAD65 /* ESTBeacon.h */,
-				318E4CD31911A2A1002DAD65 /* ESTBeaconDefinitions.h */,
-				318E4CD41911A2A1002DAD65 /* ESTBeaconFirmwareInfoVO.h */,
-				318E4CD51911A2A1002DAD65 /* ESTBeaconFirmwareVO.h */,
-				318E4CD61911A2A1002DAD65 /* ESTBeaconManager.h */,
-				318E4CD71911A2A1002DAD65 /* ESTBeaconRegion.h */,
+				318E4D331913640C002DAD65 /* ESTBeacon.h */,
+				318E4D341913640C002DAD65 /* ESTBeaconDefinitions.h */,
+				318E4D351913640C002DAD65 /* ESTBeaconFirmwareInfoVO.h */,
+				318E4D361913640C002DAD65 /* ESTBeaconFirmwareVO.h */,
+				318E4D371913640C002DAD65 /* ESTBeaconManager.h */,
+				318E4D381913640C002DAD65 /* ESTBeaconRegion.h */,
 			);
 			name = IBeacon;
 			sourceTree = "<group>";
@@ -739,6 +739,7 @@
 				31A98953190EE7BD0060624C /* UIRefreshControl+AFNetworking.m in Sources */,
 				3128A9441909ECF4002E8F92 /* SettingViewController.m in Sources */,
 				31A9896F190EE8720060624C /* AFHTTPRequestOperation.m in Sources */,
+				318E4D49191487E8002DAD65 /* PhotoUploadViewController.m in Sources */,
 				3128A8751908410F002E8F92 /* VenueTableView.m in Sources */,
 				31A98954190EE7BD0060624C /* UIWebView+AFNetworking.m in Sources */,
 				31A9895B190EE8040060624C /* AFNetworkReachabilityManager.m in Sources */,
@@ -746,6 +747,7 @@
 				3128A7EB19083E47002E8F92 /* AppDelegate.m in Sources */,
 				3128A965190B2BE4002E8F92 /* EditViewController.m in Sources */,
 				31A9894D190EE7BD0060624C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				318E4D47191487CE002DAD65 /* WHHTTPClient.m in Sources */,
 				31A9894E190EE7BD0060624C /* UIAlertView+AFNetworking.m in Sources */,
 				31A98935190EE78E0060624C /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */,
 				3128A86A1908410F002E8F92 /* PieChart.m in Sources */,
@@ -755,7 +757,6 @@
 				3128A95A190B077A002E8F92 /* PhotoViewCell.m in Sources */,
 				3128A8A519084352002E8F92 /* LaunchViewController.m in Sources */,
 				3128A97F190CDD6E002E8F92 /* CommonDataManager.m in Sources */,
-				3128A8E71908F5A4002E8F92 /* WHHTTPClient.m in Sources */,
 				31A98973190EE8940060624C /* UIAlertView+Blocks.m in Sources */,
 				3128A7E719083E47002E8F92 /* main.m in Sources */,
 				31A98934190EE78E0060624C /* SlideNavigationContorllerAnimatorScale.m in Sources */,
@@ -765,7 +766,6 @@
 				31A98958190EE7F50060624C /* AFSecurityPolicy.m in Sources */,
 				3128A8C219084462002E8F92 /* MenuViewController.m in Sources */,
 				31A98967190EE8430060624C /* AFHTTPSessionManager.m in Sources */,
-				3128A8EA19090317002E8F92 /* PhotoUploadViewController.m in Sources */,
 				31A98936190EE78E0060624C /* SlideNavigationContorllerAnimatorSlide.m in Sources */,
 				3128A9381909A271002E8F92 /* PushCustomSegue.m in Sources */,
 				31A98937190EE78E0060624C /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */,
@@ -921,6 +921,8 @@
 					"/Users/jk6803/Downloads/iOS-SDK-2.0beta/EstimoteSDK",
 					"/Users/jk6803/Downloads/iOS-SDK-2.0beta",
 					copy/EstimoteSDK,
+					"/Users/jk6803/Downloads/iOS-SDK-2-2.0beta/EstimoteSDK",
+					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -946,6 +948,8 @@
 					"/Users/jk6803/Downloads/iOS-SDK-2.0beta/EstimoteSDK",
 					"/Users/jk6803/Downloads/iOS-SDK-2.0beta",
 					copy/EstimoteSDK,
+					"/Users/jk6803/Downloads/iOS-SDK-2-2.0beta/EstimoteSDK",
+					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

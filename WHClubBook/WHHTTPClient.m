@@ -58,6 +58,7 @@ static NSString * const _baseURLString = @"http://purpleoctopus-staging.herokuap
     
     UIImage  *newImage = [[CommonDataManager sharedInstance] myImage];
     NSData *imageData = UIImageJPEGRepresentation(newImage, 0.5);
+    
     NSURLSessionDataTask *signUpTask = [self POST:@"api/users/signup" parameters:params
                         constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                             

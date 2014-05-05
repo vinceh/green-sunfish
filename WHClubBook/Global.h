@@ -6,11 +6,11 @@
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
+#import "UIAlertView+Blocks.h"
 
-
-#define WHAlert(TITLE,MSG)   [UIAlertView showWithTitle:(TITLE)    \
+#define WHAlert(TITLE,MSG,Cancel)   [UIAlertView showWithTitle:(TITLE)    \
                                                        message:(MSG)      \
-                                             cancelButtonTitle:@"Cancel"  \
+                                             cancelButtonTitle:Cancel  \
                                              otherButtonTitles:@[@"OK"]   \
                                                       tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {  \
                                             }];

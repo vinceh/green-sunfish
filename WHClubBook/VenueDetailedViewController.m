@@ -6,11 +6,19 @@
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
+#define METERS_PER_MILE 11609.344
+
 #import "VenueDetailedViewController.h"
 
-@interface VenueDetailedViewController ()
+@interface VenueDetailedViewController () <MKMapViewDelegate>
 
 @property (nonatomic, strong) NSArray *imageArray;
+@property (nonatomic, strong) UIPageControl  *pageControl;
+
+@property (nonatomic, retain) MKPolyline *routeLine; //your line
+@property (nonatomic, retain) MKPolylineView *routeLineView; //overlay view
+
+
 @end
 
 static NSString *CellIdentifier = @"com.whispr.TwitterCell";
@@ -25,16 +33,88 @@ static NSString *CellIdentifier = @"com.whispr.TwitterCell";
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = self.venue[@"name"];
-    self.venueInfoLabel.text = self.venue[@"address"];
+    self.mapView.delegate  =self;
+
+    self.mapView.showsUserLocation = YES;
+    
+//    CLLocationCoordinate2D coordinate1;
+//    coordinate1.latitude = 40.740384;
+//    coordinate1.longitude = -73.991146;
+//    myAnnotation *annotation = [[myAnnotation alloc] initWithCoordinate:coordinate1 title:@"Starbucks NY"];
+//    [self.mapView addAnnotation:annotation];
+    
+    
+//    CLLocationCoordinate2D coordinateArray[2];
+//    coordinateArray[0] = CLLocationCoordinate2DMake(lat1, lon1);
+//    coordinateArray[1] = CLLocationCoordinate2DMake(lat2, lon2);
+    
+    
+//    self.routeLine = [MKPolyline polylineWithCoordinates:coordinateArray count:2];
+//    [self.mapView setVisibleMapRect:[self.routeLine boundingMapRect]]; //If you want the route to be visible
+//    
+//    [self.mapView addOverlay:self.routeLine];
+//    
+
+    
     [self setupView];
 }
-
--(void)setupView  {
+-(void) viewWillAppear:(BOOL)animated {
     
+    
+//    CLLocationCoordinate2D zoomLocation;
+//    zoomLocation.latitude = 40.740848;
+//    zoomLocation.longitude= -73.991145;
+//    // 2
+//    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.003*METERS_PER_MILE, 0.003*METERS_PER_MILE);
+//    [self.mapView setRegion:viewRegion animated:YES];
+    
+    
+}
+-(void)viewDidAppear:(BOOL)animated {
+
+}
+-(void) viewWillDisappear:(BOOL)animated  {
+    
+    [self.pageControl removeFromSuperview];
+    
+    
+    
+}
+-(void)setupView  {
+
+    self.sun.layer.borderWidth = 1.0f;
+    self.sun.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.mon.layer.borderWidth = 1.0f;
+    self.mon.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.tue.layer.borderWidth = 1.0f;
+    self.tue.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.wed.layer.borderWidth = 1.0f;
+    self.wed.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.thu.layer.borderWidth = 1.0f;
+    self.thu.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.fri.layer.borderWidth = 1.0f;
+    self.fri.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.sat.layer.borderWidth = 1.0f;
+    self.sat.layer.borderColor = [UIColor lightGrayColor].CGColor;
+
+    
+    self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(120, 0,100,40)];
+    [self.pageControl addTarget:self action:@selector(pageTurn:) forControlEvents:UIControlEventValueChanged];
+    self.pageControl.numberOfPages = 4;
+    self.pageControl.currentPage = 0;
+    self.pageControl.pageIndicatorTintColor = [UIColor blueColor];
+    self.pageControl.currentPageIndicatorTintColor = [UIColor redColor];
+    
+//    self.pageControl.backgroundColor = [UIColor redColor];
+//    self.navigationItem.titleView = self.pageControl;
+
+    [self.navigationController.navigationBar addSubview:self.pageControl];
+    
+
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.imageArray = [[NSArray alloc] initWithObjects:@"image1.jpg", @"image2.jpg", @"image3.jpg",@"image4.jpg" ,nil];
     
@@ -53,15 +133,11 @@ static NSString *CellIdentifier = @"com.whispr.TwitterCell";
      self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * [self.imageArray count], self.scrollView.frame.size.height);
     
     
-	self.pageControl.numberOfPages = [self.imageArray count];
-    
-    //twitter..
-//    [self.tweetTableView registerClass:[TwitterTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+     self.address1 = self.venueInfo[@"address"];
+//	self.pageControl.numberOfPages = [self.imageArray count];
     
 }
 
-
-#pragma mark -
 #pragma mark UIScrollViewDelegate stuff
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
@@ -70,66 +146,16 @@ static NSString *CellIdentifier = @"com.whispr.TwitterCell";
     self.pageControl.currentPage = page;
 }
 
-
-- (BOOL)userHasAccessToTwitter
-{
-    return [SLComposeViewController
-            isAvailableForServiceType:SLServiceTypeTwitter];
+-(void) pageTurn:(UIPageControl*) sender {
+    [UIView  animateWithDuration:0.5f animations:^{
+        self.scrollView.contentOffset = CGPointMake(320.0f *sender.currentPage, 0.0f);
+    } completion:^(BOOL finished) {
+    }];
 }
 
-- (void)getTimeLine {
-    
-    ACAccountStore *account = [[ACAccountStore alloc] init];
-    ACAccountType *accountType = [account
-                                  accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    
-    [account requestAccessToAccountsWithType:accountType
-                                     options:nil completion:^(BOOL granted, NSError *error)
-     {
-         if (granted == YES)
-         {
-             NSArray *arrayOfAccounts = [account accountsWithAccountType:accountType];
-             if ([arrayOfAccounts count] > 0)
-             {
-                 ACAccount *twitterAccount =
-                 [arrayOfAccounts lastObject];
-                 
-                 NSURL *requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/user_timeline.json"];
-                 
-                 NSDictionary *parameters = @{@"screen_name" : @"@techotopia",
-                                              @"include_rts" : @"0",
-                                              @"trim_user" : @"1",
-                                              @"count" : @"20"};
-                 
-                 SLRequest *postRequest = [SLRequest
-                                           requestForServiceType:SLServiceTypeTwitter
-                                           requestMethod:SLRequestMethodGET
-                                           URL:requestURL parameters:parameters];
-                 
-                 postRequest.account = twitterAccount;
-                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    
-                       self.dataSource = [NSJSONSerialization
-                                         JSONObjectWithData:responseData
-                                         options:NSJSONReadingMutableLeaves
-                                         error:&error];
-                      if (self.dataSource) {
-                          dispatch_async(dispatch_get_main_queue(), ^{
-                              [self.tweetTableView reloadData];
-                          });
-                      }
-                  }];
-             }
-         } else {
-             // Handle failure to get account access
-         }
-     }];
-}
-
-#pragma mark -
-#pragma mark UITableViewDataSource
 
 
+     
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -137,7 +163,4 @@ static NSString *CellIdentifier = @"com.whispr.TwitterCell";
 }
 
 
-
-- (IBAction)tableCover:(id)sender {
-}
 @end

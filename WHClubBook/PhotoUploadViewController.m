@@ -140,21 +140,34 @@
 
 - (IBAction)register:(id)sender {
     
-    [self.activityIndicator startAnimating];
-    NSDictionary *params = [[CommonDataManager sharedInstance] signupParameters];
-    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params completion:^(NSString *result, NSError *error) {
+}
 
-        if(!error) {
-            NSString *response = result;
-            [[CommonDataManager sharedInstance]  setAccessToken:response];
-        }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSLog(@" %s", __func__);
+    [self.activityIndicator startAnimating];
+
+    if ([[segue identifier] isEqualToString:@"venueSegue"])
+    {
+        NSDictionary *params = [[CommonDataManager sharedInstance] signupParameters];
+        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params completion:^(NSString *result, NSError *error) {
+            
+            if(!error) {
+                NSString *response = result;
+                [[CommonDataManager sharedInstance]  setAccessToken:response];
+                [segue destinationViewController];
+            }
+        }];
+        [self.activityIndicator stopAnimating];
         
-    }];
-    [self.activityIndicator stopAnimating];
+        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+
+    }
     
-    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     
+
     
 }
+
 
 @end

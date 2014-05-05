@@ -7,24 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Accounts/Accounts.h>
-#import <Social/Social.h>
+#import <MapKit/MapKit.h>
 
-@interface VenueDetailedViewController : UIViewController<UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate>
+@interface VenueDetailedViewController : UIViewController<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
-@property (weak, nonatomic) IBOutlet UILabel *venueInfoLabel;
-@property (weak, nonatomic) IBOutlet UITableView *twitterTableView;
-@property (weak, nonatomic) IBOutlet UIButton *buyCover;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UILabel *address2;
 
-@property(nonatomic,strong) NSString *venueName;
-@property(nonatomic,strong) UITableView *tweetTableView;
-@property (strong, nonatomic) NSArray *dataSource;
-@property (strong, nonatomic) NSDictionary  *venue;
+@property (weak, nonatomic) IBOutlet UILabel *address1;
+@property (weak, nonatomic) IBOutlet UILabel *ageLimit;
+@property (weak, nonatomic) IBOutlet UILabel *hour;
+@property (strong, nonatomic) NSDictionary  *venueInfo;
 
-
-- (IBAction)tableCover:(id)sender;
-
+@property (weak, nonatomic) IBOutlet UILabel *sun;
+@property (weak, nonatomic) IBOutlet UILabel *mon;
+@property (weak, nonatomic) IBOutlet UILabel *tue;
+@property (weak, nonatomic) IBOutlet UILabel *wed;
+@property (weak, nonatomic) IBOutlet UILabel *thu;
+@property (weak, nonatomic) IBOutlet UILabel *fri;
+@property (weak, nonatomic) IBOutlet UILabel *sat;
 
 @end

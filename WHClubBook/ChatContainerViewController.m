@@ -1,20 +1,18 @@
 //
-//  NotificationViewController.m
+//  ChatContainerViewController.m
 //  WHClubBook
 //
 //  Created by yong choi on 2014. 5. 4..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
-#import "NotificationViewController.h"
+#import "ChatContainerViewController.h"
 
-@interface NotificationViewController ()
-@property (weak, nonatomic) IBOutlet UIView *localView;
-@property (weak, nonatomic) IBOutlet UIView *remoteView;
+@interface ChatContainerViewController ()
 
 @end
 
-@implementation NotificationViewController
+@implementation ChatContainerViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,11 +27,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-  
-    if ([self.notiIndicator isEqualToString:@"LOCAL"]) {
-        self.localView.hidden = NO;
-    }
-
 }
 
 - (void)didReceiveMemoryWarning

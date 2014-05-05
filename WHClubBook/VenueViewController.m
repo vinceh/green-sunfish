@@ -8,64 +8,77 @@
 
 #import "VenueViewController.h"
 
+@interface VenueViewController () <CLLocationManagerDelegate>
 
+@property (weak,nonatomic) IBOutlet VenueTableView *tableView;
+@property (weak,nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,strong) NSMutableArray *venues;
+@property (nonatomic,strong) NSMutableArray *myVenues;
+@property (nonatomic,strong) NSMutableArray *venuesForDisplay;
 
-@interface VenueViewController ()
-
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
-@property (weak, nonatomic) IBOutlet VenueTableView *tableView;
-@property(nonatomic, strong) NSMutableArray *venues;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) CLGeocoder *geocoder;
-
-- (IBAction)selectVenue:(UISegmentedControl *)sender;
-
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocation *targetLocation;
 @end
 
 static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
+static BOOL  favoriteMode = YES;
+VenueTableViewCell *cell;
 
 @implementation VenueViewController
 
 #pragma  mark - Viewcontroller delegate
--(void)viewWillAppear:(BOOL)animated {
-    
-}
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Venue";
-    self.segmentControl.selectedSegmentIndex = 0;
-    self.segmentControl.tintColor = [UIColor redColor];
-    self.segmentControl.hidden = YES;
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    _locationManager.delegate = self;
+    [_locationManager startUpdatingLocation];
+    
+//  self.title = @"Venue";
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:CGRectMake(0.0f, 0.0f, 25.0f, 40.0f)];
+    [btn addTarget:self action:@selector(showMyFavorite:) forControlEvents:UIControlEventTouchUpInside];
+    [btn setImage:[UIImage imageNamed:@"star.jpg"] forState:UIControlStateNormal];
+    UIBarButtonItem *eng_btn = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.rightBarButtonItem = eng_btn;
+
     [self.tableView registerNib:[UINib nibWithNibName:@"VenueTableViewCell" bundle:nil] forCellReuseIdentifier:VenueViewCellIdentifier];
     [self requestToServer];
     
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [_locationManager startUpdatingLocation];
+    [self updateTableData];
+}
 
+-(void) updateTableData{
+    [self.tableView reloadData];
+}
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+-(void) viewWillAppear:(BOOL)animated  {
     NSLog(@"  %s", __func__);
 
 }
 
+
 -(void) viewWillLayoutSubviews  {
     self.tableView.frame = CGRectMake(0, self.topLayoutGuide.length + 52,CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
     self.tableView.contentInset = UIEdgeInsetsMake(-3, 0, 0, 0);
-    self.segmentControl.frame = CGRectMake(90, self.topLayoutGuide.length + 5,150,40);
 }
-
 
 #pragma mark-  tableview section
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView  {
     
-    return self.venues.count;
+    return self.venuesForDisplay.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return  self.venues[section][@"name"];
+    return  self.venuesForDisplay[section][@"name"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView  numberOfRowsInSection:(NSInteger)section {
@@ -80,37 +93,43 @@ static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView   cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    VenueTableViewCell *cell = (VenueTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VenueViewCellIdentifier forIndexPath:indexPath];
+    cell = (VenueTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VenueViewCellIdentifier forIndexPath:indexPath];
+    UIButton * addBtn,*deleteBtn;
     
-    NSDictionary *nightlyInfo  = self.venues[indexPath.row][@"nightly"];
-    NSUInteger guestWaitTime   =  (NSUInteger) nightlyInfo[@"guest_wait_time"];
-    NSUInteger regularWaitTime =  (NSUInteger) nightlyInfo[@"regular_wait_time"];
-
-     UIButton * favorite = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [favorite setTitle:@"ADD TO FAV" forState:UIControlStateNormal];
-    [favorite setFrame:CGRectMake(230, -4, 90, 24)];
-    [favorite setTag:indexPath.row];
-    [favorite.titleLabel setFont:[UIFont systemFontOfSize:13]];
-    [favorite addTarget:self action:@selector(addMyfavorite:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:favorite];
+    NSURL  *imageURL = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"club" ofType:@"jpg"]];
+    [cell.bgImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"loading"]];
     
-    cell.vipView = (UIView*)[cell viewWithTag:1];
-    cell.vipView.layer.cornerRadius = CGRectGetWidth(cell.vipView.frame) / 2;
     
-    cell.regularView = (UIView*) [cell viewWithTag:2];
-    cell.regularView.layer.cornerRadius = CGRectGetWidth(cell.regularView.frame) / 2;
-    cell.tempView = (UIView*)[cell viewWithTag:3];
-    cell.tempView.layer.cornerRadius = CGRectGetWidth(cell.tempView.frame) / 2;
+    NSDictionary *nightlyInfo  = self.venuesForDisplay[indexPath.row][@"nightly"];
+    [self coordinates:self.venues[indexPath.row][@"address"]];
     
-    cell.vipPercent.text = @"20%";
-    cell.regPercent.text = @"30%";
+    cell.distance.text = [self updateDistances];
+    cell.guestWaitingTime.text =  [NSString stringWithFormat:@"%@", nightlyInfo[@"guest_wait_time"]];
+    cell.regWaitingTime.text   =  [NSString stringWithFormat:@"%@", nightlyInfo[@"regular_wait_time"]];
     cell.degree.text = @"20°";
-    cell.address.text =  self.venues[indexPath.row][@"address"];
-//    [self coordinates:cell.address.text];
+
+    if (!favoriteMode) {
+        [addBtn removeFromSuperview];
+        deleteBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [deleteBtn setFrame:CGRectMake(250, 10, 50, 50)];
+        [deleteBtn setBackgroundImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+        [deleteBtn setTag:indexPath.row];
+        [deleteBtn addTarget:self action:@selector(deleteMyfavorite:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.bgImageView addSubview:deleteBtn];
+
+    } else  {
+        [deleteBtn removeFromSuperview];
+        addBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [addBtn setFrame:CGRectMake(250, 10, 50, 50)];
+        [addBtn setBackgroundImage:[UIImage imageNamed:@"star.jpg"] forState:UIControlStateNormal];
+        [addBtn setTag:indexPath.row];
+        [addBtn addTarget:self action:@selector(addMyfavorite:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.bgImageView addSubview:addBtn];
+    }
+
     return cell;
 }
 
-//venueDetailSegue
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -131,7 +150,6 @@ static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
 
 
 #pragma mark - cloud  integration
-
 -(void) requestToServer {
     
     [self.activityIndicator startAnimating];
@@ -140,18 +158,48 @@ static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
         if (!error) {
             //   [self.venues removeAllObjects];
             self.venues = [NSMutableArray arrayWithArray:results];
+            self.venuesForDisplay = [NSMutableArray arrayWithArray:results];
             [self.tableView reloadData];
             [self.activityIndicator stopAnimating];
-            self.segmentControl.hidden = NO;
+            self.myVenues = [NSMutableArray array];
         }
     }];
     [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     //[self.refreshControl setRefreshingWithStateOfTask:task];
-    
 }
 
--(void) addMyfavorite:(id)sender  {
+-(void) addMyfavorite:(UIButton*)sender  {
+    [self.myVenues addObject:self.venues[sender.tag]];
+}
+
+-(void)deleteMyfavorite:(UIButton*)sender  {
     
+    [self.myVenues removeObjectAtIndex:sender.tag];
+    [self.venuesForDisplay removeAllObjects];
+    [self.venuesForDisplay addObjectsFromArray:self.myVenues];
+    [self.tableView reloadData];
+}
+
+-(void) showMyFavorite:(id) sender {
+
+    if (favoriteMode) {
+        [self.venuesForDisplay removeAllObjects];
+        [self.venuesForDisplay addObjectsFromArray:self.myVenues];
+    }
+    else  {
+        [self.venuesForDisplay removeAllObjects];
+        [self.venuesForDisplay addObjectsFromArray:self.venues];
+    }
+
+    [self.tableView reloadData];
+    favoriteMode = !favoriteMode;
+}
+
+
+
+#pragma mark - CLLocationManagerDelegate
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    [self updateTableData];
 }
 
 - (void) coordinates:(NSString*) clubAddress  {
@@ -159,51 +207,42 @@ static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
     if (!self.geocoder) {
         self.geocoder = [[CLGeocoder alloc] init];
     }
-
-    [self.geocoder geocodeAddressString:clubAddress completionHandler:^(NSArray *placemarks, NSError *error) {
-
+    
+    [self.geocoder geocodeAddressString:@"1150 Granville st vancouver BC" completionHandler:^(NSArray *placemarks, NSError *error) {
+        
         if ([placemarks count] > 0) {
             CLPlacemark *placemark = [placemarks objectAtIndex:0];
-            CLLocation *location = placemark.location;
-            CLLocationCoordinate2D coordinate = location.coordinate;
+            self.targetLocation = placemark.location;
+            CLLocationCoordinate2D coordinate = self.targetLocation.coordinate;
             NSLog(@" lat %f", coordinate.latitude);
             NSLog(@" lon %f", coordinate.longitude);
-           
         }
     }];
 }
 
-
-
+-(NSString*) updateDistances{
+    
+        CLLocationCoordinate2D my2DLocation = self.targetLocation.coordinate;
+        CLLocation *myLocation = [[CLLocation alloc] initWithLatitude:my2DLocation.latitude longitude:my2DLocation.longitude];
+        CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:_locationManager.location.coordinate.latitude longitude:_locationManager.location.coordinate.longitude];
+        CLLocationDistance distance = [myLocation distanceFromLocation:newLocation];
+       return [NSString stringWithFormat:@"%.0fkm", distance / 1000];
+}
 
 #pragma mark - Navigation
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     VenueDetailedViewController  *venueDetailedVC = [segue destinationViewController];
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    venueDetailedVC.venue = self.venues[indexPath.section];
+    venueDetailedVC.venueInfo = self.venues[indexPath.section];
     venueDetailedVC.hidesBottomBarWhenPushed  = YES;
-//    venueDetailedVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//  venueDetailedVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-
-- (IBAction)selectVenue:(UISegmentedControl *)sender {
-    
-    switch (sender.selectedSegmentIndex) {
-        case 0:
-            [self requestToServer];
-            break;
-        case 1:
-            [self requestToServer];  //with my list..
-            break;
-    }
 }
 
 #pragma mark - SlideNavigationController Methods -

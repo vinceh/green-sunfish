@@ -15,6 +15,8 @@
 #import  "VenueTableView.h"
 #import "SlideNavigationController.h"
 #import "CommonDataManager.h"
+#import "UIImageView+AFNetworking.h"
+
 
 
 @interface VenueViewController : UIViewController<UITableViewDataSource, UITableViewDelegate,SlideNavigationControllerDelegate>

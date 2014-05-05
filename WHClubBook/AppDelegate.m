@@ -22,13 +22,14 @@
     
     NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
+    
     if(remoteNotification != nil)
     {
         [self application:application didFinishLaunchingWithOptions:remoteNotification];
     }
     
     UILocalNotification *locationNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    
+
     if (locationNotification) {
         application.applicationIconBadgeNumber = 1;
     } else  {
@@ -48,7 +49,22 @@
                                                                              UIRemoteNotificationTypeAlert|
                                                                              UIRemoteNotificationTypeBadge|
                                                                              UIRemoteNotificationTypeSound];
-}
+
+    }
+    
+
+    AFNetworkReachabilityManager *reachability = [AFNetworkReachabilityManager sharedManager];
+    [reachability startMonitoring];
+    
+    [reachability setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusNotReachable:
+                WHAlert(@"Error", @"network is not available",nil);
+                break;
+        }
+    }];
+
+    
     
     //ibeacon..
     NSLog(@" beacon started");
@@ -59,8 +75,8 @@
     self.beaconRegion.notifyOnEntry = YES;
     self.beaconRegion.notifyOnExit = YES;
     self.beaconRegion.notifyEntryStateOnDisplay = YES;
-    [self.beaconManager startRangingBeaconsInRegion:self.beaconRegion];
-//    [self.beaconManager startMonitoringForRegion:self.beaconRegion];
+//    [self.beaconManager startRangingBeaconsInRegion:self.beaconRegion];
+    [self.beaconManager startMonitoringForRegion:self.beaconRegion];
     
     return YES;
 }
@@ -69,14 +85,21 @@
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
     if (notification) {
-
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         NotificationViewController   *notiVC = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
+        notiVC.notiIndicator = @"LOCAL";
         [self.window.rootViewController presentViewController:notiVC animated:YES completion:nil];
     }
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    NSLog(@"  remote noti  dic  ==>  %@", userInfo);
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    NotificationViewController   *notiVC = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
+    notiVC.notiIndicator = @"REMOTE";
+    [self.window.rootViewController presentViewController:notiVC animated:YES completion:nil];
     
 }
 

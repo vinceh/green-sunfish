@@ -1,5 +1,5 @@
 //
-//  NotificationViewController.h
+//  PeopleViewController.h
 //  WHClubBook
 //
 //  Created by yong choi on 2014. 5. 4..
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NotificationViewController : UIViewController
-@property(nonatomic, strong)  NSString  *notiIndicator;
+@interface PeopleViewController : UICollectionViewController
+
 @end

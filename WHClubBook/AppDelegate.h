@@ -15,6 +15,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import "ESTBeaconManager.h"
+#import "AFNetworkReachabilityManager.h"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,ESTBeaconManagerDelegate>

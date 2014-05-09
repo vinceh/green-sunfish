@@ -12,6 +12,7 @@
 #import "CommonDataManager.h"
 #import "WHHTTPClient.h"
 #import "UIAlertView+AFNetworking.h"
+#import "VenueViewController.h"
 
 
 @interface PhotoUploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate>

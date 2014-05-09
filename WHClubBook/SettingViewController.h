@@ -13,6 +13,10 @@
 #import "EditViewController.h"
 #import "CommonDataManager.h"
 #import "WHHTTPClient.h"
+#import "UIAlertView+AFNetworking.h"
+#import "UIImageView+AFNetworking.h"
+
+
 
 @interface SettingViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, SlideNavigationControllerDelegate>
 

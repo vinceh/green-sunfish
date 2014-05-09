@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SignUpViewController.h"
 #import "SignInViewController.h"
-#import "SlideNavigationController.h"
+#import "CommonDataManager.h"
 
 
 
@@ -21,7 +21,5 @@
 @property (weak, nonatomic) IBOutlet UIButton *signin;
 @property (weak, nonatomic) IBOutlet UIButton *signup;
 
-- (IBAction)signIn:(id)sender;
-- (IBAction)signUp:(id)sender;
 
 @end

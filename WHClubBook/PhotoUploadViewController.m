@@ -12,10 +12,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *photoView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (nonatomic, assign) BOOL viewVisible;
+- (IBAction)register:(id)sender;
 
 - (IBAction)takePic:(id)sender;
 - (IBAction)selectPic:(id)sender;
-- (IBAction)register:(id)sender;
+- (IBAction)cancel:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 
@@ -51,7 +53,9 @@
     singleTap.numberOfTouchesRequired = 1;
     [self.photoView  addGestureRecognizer:singleTap];
     [self.photoView  setUserInteractionEnabled:YES];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fireVenueView:) name:@"didRegisterSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goBack:) name:@"didRegisterDup" object:nil];
 }
 
 
@@ -91,24 +95,12 @@
 }
 
 - (void) imageTapped:(id) sender {
-    
-    float originalY;
-    
-    if(self.viewVisible)  {
-        self.viewVisible = NO;
-        originalY = 568;
-    }
-    else {
-        self.viewVisible = YES;
-        originalY = 400;
-    }
-    
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.containerView.frame = CGRectMake(18, originalY,self.containerView.frame.size.width,self.containerView.frame.size.height);
-        
-    }completion:^(BOOL finished) {
-        
-    }];
+
+    [self hideShowMenu];
+}
+
+- (IBAction)cancel:(id)sender {
+    [self hideShowMenu];
 }
 
 - (IBAction)takePic:(id)sender {
@@ -138,36 +130,108 @@
     }
 }
 
-- (IBAction)register:(id)sender {
+-(void) hideShowMenu {
+    float originalY;
     
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    NSLog(@" %s", __func__);
-    [self.activityIndicator startAnimating];
-
-    if ([[segue identifier] isEqualToString:@"venueSegue"])
-    {
-        NSDictionary *params = [[CommonDataManager sharedInstance] signupParameters];
-        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params completion:^(NSString *result, NSError *error) {
-            
-            if(!error) {
-                NSString *response = result;
-                [[CommonDataManager sharedInstance]  setAccessToken:response];
-                [segue destinationViewController];
-            }
-        }];
-        [self.activityIndicator stopAnimating];
-        
-        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-
+    if(self.viewVisible)  {
+        self.viewVisible = NO;
+        originalY = 568;
+    }
+    else {
+        self.viewVisible = YES;
+        originalY = 400;
     }
     
-    
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.containerView.frame = CGRectMake(18, originalY,self.containerView.frame.size.width,self.containerView.frame.size.height);
+        
+    }completion:^(BOOL finished) {
+        
+    }];
+}
 
+- (IBAction)register:(id)sender {
+
+    if (self.photoView.image == nil) {
+        WHAlert(@"Error", @"photo is required",nil);
+        return;
+    }
+    [self.activityIndicator startAnimating];
+
+    NSDictionary *params = [[CommonDataManager sharedInstance] signupParameters];
+    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params completion:^(NSString *result, NSError *error) {
+        
+        if(!error) {
+            NSString *response = result;
+            [[CommonDataManager sharedInstance]  setAccessToken:response];
+        }
+    }];
+    
+    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+
+}
+
+
+-(void)fireVenueView:(id)sender  {
+    [self apnsUpdate];
+    [self.activityIndicator stopAnimating];
+    UIStoryboard  *st = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    VenueViewController  *venueVC = [st instantiateViewControllerWithIdentifier:@"VenueViewController"];
+    [self.navigationController pushViewController:venueVC animated:YES];
     
 }
 
+-(void) goBack:(id)sender  {
+    [self.activityIndicator stopAnimating];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+
+-(void) apnsUpdate  {
+    
+    NSDictionary  *apnsDic = [[CommonDataManager sharedInstance] accessAPNStoken];
+    NSString      *accessToken = [[CommonDataManager sharedInstance] accessToken];
+    
+    if([apnsDic[@"update"] isEqualToString:@"N"] && accessToken != nil)  {
+
+        NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken], @"token":apnsDic[@"key"]};
+        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] apnUpdate:params completion:^(NSDictionary *result, NSError *error) {
+            
+            if (result[@"success"]) {
+                NSLog(@" apns updated in regisger..");
+            }
+        }];
+        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+    }
+
+}
+
+-(void) dealloc  {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    NSLog(@" %s", __func__);
+//    
+//    
+//        [self.activityIndicator startAnimating];
+//        if ([[segue identifier] isEqualToString:@"venueSegue"])
+//        {
+//            NSDictionary *params = [[CommonDataManager sharedInstance] signupParameters];
+//            NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params completion:^(NSString *result, NSError *error) {
+//                
+//                if(!error) {
+//                    NSString *response = result;
+//                    [[CommonDataManager sharedInstance]  setAccessToken:response];
+//                    [segue destinationViewController];
+//                }
+//            }];
+//            
+//            [self.activityIndicator stopAnimating];
+//            [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+//        }
+//}
 
 @end

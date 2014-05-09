@@ -54,11 +54,8 @@
 		318E4D591915F33B002DAD65 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = 318E4D581915F33B002DAD65 /* loading.png */; };
 		318E4D5F19160EBE002DAD65 /* club.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 318E4D5E19160EBE002DAD65 /* club.jpg */; };
 		318E4D611916199C002DAD65 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318E4D601916199C002DAD65 /* MapKit.framework */; };
-		318E4D64191636AF002DAD65 /* ChatContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4D63191636AF002DAD65 /* ChatContainerViewController.m */; };
 		318E4D67191636BC002DAD65 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4D66191636BC002DAD65 /* PeopleViewController.m */; };
 		318E4D6A1916E2AA002DAD65 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 318E4D691916E2AA002DAD65 /* delete.png */; };
-		318E4D6D19170C5C002DAD65 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4D6C19170C5C002DAD65 /* NotificationViewController.m */; };
-		318E4D7019176AFF002DAD65 /* myAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E4D6F19176AFF002DAD65 /* myAnnotation.m */; };
 		31A9884F190E42210060624C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9884E190E42210060624C /* ChatViewController.m */; };
 		31A98852190E42730060624C /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98851190E42720060624C /* AboutViewController.m */; };
 		31A98924190EE73C0060624C /* GBPathImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98923190EE73C0060624C /* GBPathImageView.m */; };
@@ -89,6 +86,16 @@
 		31A98970190EE8720060624C /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9896E190EE8720060624C /* AFHTTPRequestOperationManager.m */; };
 		31A98973190EE8940060624C /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A98972190EE8940060624C /* UIAlertView+Blocks.m */; };
 		31A98986190F22BC0060624C /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A98985190F22BC0060624C /* AdSupport.framework */; };
+		31CD63A8191AD59B00523BE3 /* profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 31CD63A7191AD59A00523BE3 /* profile.png */; };
+		31CD63AB191AF8AC00523BE3 /* VenueAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CD63AA191AF8AC00523BE3 /* VenueAnnotation.m */; };
+		31CD63B4191B36A000523BE3 /* WHTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CD63B3191B36A000523BE3 /* WHTabBarController.m */; };
+		31CD63B7191B376200523BE3 /* PeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CD63B6191B376200523BE3 /* PeopleCell.m */; };
+		31CD63BA191B37A100523BE3 /* PeopleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CD63B9191B37A100523BE3 /* PeopleDetailViewController.m */; };
+		31CD640A191BFB1200523BE3 /* RemoteNotiView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CD6409191BFB1200523BE3 /* RemoteNotiView.m */; };
+		31CD640C191BFB2C00523BE3 /* RemoteNotiView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31CD640B191BFB2C00523BE3 /* RemoteNotiView.xib */; };
+		31CD640F191BFF5800523BE3 /* LocalNotiView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CD640E191BFF5800523BE3 /* LocalNotiView.m */; };
+		31CD6411191BFF6D00523BE3 /* LocalNotiView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31CD6410191BFF6D00523BE3 /* LocalNotiView.xib */; };
+		31CD6414191C17C300523BE3 /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CD6413191C17C300523BE3 /* Util.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,15 +185,9 @@
 		318E4D581915F33B002DAD65 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		318E4D5E19160EBE002DAD65 /* club.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = club.jpg; sourceTree = "<group>"; };
 		318E4D601916199C002DAD65 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		318E4D62191636AF002DAD65 /* ChatContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatContainerViewController.h; sourceTree = "<group>"; };
-		318E4D63191636AF002DAD65 /* ChatContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatContainerViewController.m; sourceTree = "<group>"; };
 		318E4D65191636BC002DAD65 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		318E4D66191636BC002DAD65 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
 		318E4D691916E2AA002DAD65 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
-		318E4D6B19170C5C002DAD65 /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
-		318E4D6C19170C5C002DAD65 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
-		318E4D6E19176AFF002DAD65 /* myAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myAnnotation.h; sourceTree = "<group>"; };
-		318E4D6F19176AFF002DAD65 /* myAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myAnnotation.m; sourceTree = "<group>"; };
 		31A9884D190E42210060624C /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		31A9884E190E42210060624C /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		31A98850190E42720060624C /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -247,6 +248,23 @@
 		31A98971190EE8940060624C /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+Blocks.h"; path = "Third Party lib/UIkit+AFNetworking/UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		31A98972190EE8940060624C /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIAlertView+Blocks.m"; path = "Third Party lib/UIkit+AFNetworking/UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		31A98985190F22BC0060624C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		31CD63A7191AD59A00523BE3 /* profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile.png; sourceTree = "<group>"; };
+		31CD63A9191AF8AC00523BE3 /* VenueAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenueAnnotation.h; sourceTree = "<group>"; };
+		31CD63AA191AF8AC00523BE3 /* VenueAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenueAnnotation.m; sourceTree = "<group>"; };
+		31CD63B2191B36A000523BE3 /* WHTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTabBarController.h; sourceTree = "<group>"; };
+		31CD63B3191B36A000523BE3 /* WHTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTabBarController.m; sourceTree = "<group>"; };
+		31CD63B5191B376200523BE3 /* PeopleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleCell.h; sourceTree = "<group>"; };
+		31CD63B6191B376200523BE3 /* PeopleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleCell.m; sourceTree = "<group>"; };
+		31CD63B8191B37A100523BE3 /* PeopleDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailViewController.h; sourceTree = "<group>"; };
+		31CD63B9191B37A100523BE3 /* PeopleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleDetailViewController.m; sourceTree = "<group>"; };
+		31CD6408191BFB1200523BE3 /* RemoteNotiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteNotiView.h; sourceTree = "<group>"; };
+		31CD6409191BFB1200523BE3 /* RemoteNotiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteNotiView.m; sourceTree = "<group>"; };
+		31CD640B191BFB2C00523BE3 /* RemoteNotiView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RemoteNotiView.xib; sourceTree = "<group>"; };
+		31CD640D191BFF5800523BE3 /* LocalNotiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotiView.h; sourceTree = "<group>"; };
+		31CD640E191BFF5800523BE3 /* LocalNotiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalNotiView.m; sourceTree = "<group>"; };
+		31CD6410191BFF6D00523BE3 /* LocalNotiView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalNotiView.xib; sourceTree = "<group>"; };
+		31CD6412191C17C300523BE3 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		31CD6413191C17C300523BE3 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,6 +348,7 @@
 		3128A7E119083E47002E8F92 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				31CD63A7191AD59A00523BE3 /* profile.png */,
 				318E4D691916E2AA002DAD65 /* delete.png */,
 				318E4D5E19160EBE002DAD65 /* club.jpg */,
 				318E4D581915F33B002DAD65 /* loading.png */,
@@ -403,6 +422,14 @@
 				3128A8661908410F002E8F92 /* VenueTableViewCell.m */,
 				3128A8501908410F002E8F92 /* PieChart.h */,
 				3128A8511908410F002E8F92 /* PieChart.m */,
+				31CD63A9191AF8AC00523BE3 /* VenueAnnotation.h */,
+				31CD63AA191AF8AC00523BE3 /* VenueAnnotation.m */,
+				31CD6408191BFB1200523BE3 /* RemoteNotiView.h */,
+				31CD6409191BFB1200523BE3 /* RemoteNotiView.m */,
+				31CD640B191BFB2C00523BE3 /* RemoteNotiView.xib */,
+				31CD640D191BFF5800523BE3 /* LocalNotiView.h */,
+				31CD640E191BFF5800523BE3 /* LocalNotiView.m */,
+				31CD6410191BFF6D00523BE3 /* LocalNotiView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -416,6 +443,8 @@
 				3128A8A319084352002E8F92 /* LaunchViewController.m */,
 				3128A8571908410F002E8F92 /* SignInViewController.h */,
 				3128A8581908410F002E8F92 /* SignInViewController.m */,
+				3128A980190D200C002E8F92 /* VenueViewController.h */,
+				3128A981190D200C002E8F92 /* VenueViewController.m */,
 				3128A8611908410F002E8F92 /* VenueDetailedViewController.h */,
 				3128A8621908410F002E8F92 /* VenueDetailedViewController.m */,
 				3128A8E21908F13E002E8F92 /* SignUpViewController.h */,
@@ -426,20 +455,18 @@
 				3128A9431909ECF4002E8F92 /* SettingViewController.m */,
 				3128A963190B2BE4002E8F92 /* EditViewController.h */,
 				3128A964190B2BE4002E8F92 /* EditViewController.m */,
-				3128A980190D200C002E8F92 /* VenueViewController.h */,
-				3128A981190D200C002E8F92 /* VenueViewController.m */,
-				31A9884D190E42210060624C /* ChatViewController.h */,
-				31A9884E190E42210060624C /* ChatViewController.m */,
 				31A98850190E42720060624C /* AboutViewController.h */,
 				31A98851190E42720060624C /* AboutViewController.m */,
-				318E4D62191636AF002DAD65 /* ChatContainerViewController.h */,
-				318E4D63191636AF002DAD65 /* ChatContainerViewController.m */,
+				31CD63B2191B36A000523BE3 /* WHTabBarController.h */,
+				31CD63B3191B36A000523BE3 /* WHTabBarController.m */,
 				318E4D65191636BC002DAD65 /* PeopleViewController.h */,
 				318E4D66191636BC002DAD65 /* PeopleViewController.m */,
-				318E4D6B19170C5C002DAD65 /* NotificationViewController.h */,
-				318E4D6C19170C5C002DAD65 /* NotificationViewController.m */,
-				318E4D6E19176AFF002DAD65 /* myAnnotation.h */,
-				318E4D6F19176AFF002DAD65 /* myAnnotation.m */,
+				31CD63B8191B37A100523BE3 /* PeopleDetailViewController.h */,
+				31CD63B9191B37A100523BE3 /* PeopleDetailViewController.m */,
+				31A9884D190E42210060624C /* ChatViewController.h */,
+				31A9884E190E42210060624C /* ChatViewController.m */,
+				31CD63B5191B376200523BE3 /* PeopleCell.h */,
+				31CD63B6191B376200523BE3 /* PeopleCell.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -619,6 +646,8 @@
 				3128A97C190CB791002E8F92 /* Global.h */,
 				3128A97D190CDD6E002E8F92 /* CommonDataManager.h */,
 				3128A97E190CDD6E002E8F92 /* CommonDataManager.m */,
+				31CD6412191C17C300523BE3 /* Util.h */,
+				31CD6413191C17C300523BE3 /* Util.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -739,6 +768,7 @@
 				3128A960190B085B002E8F92 /* BasicProfileCell.xib in Resources */,
 				3128A7EE19083E47002E8F92 /* Main.storyboard in Resources */,
 				3128A8771908410F002E8F92 /* VenueTableViewCell.xib in Resources */,
+				31CD6411191BFF6D00523BE3 /* LocalNotiView.xib in Resources */,
 				318E4D5F19160EBE002DAD65 /* club.jpg in Resources */,
 				318E4D6A1916E2AA002DAD65 /* delete.png in Resources */,
 				3128A95B190B077A002E8F92 /* PhotoViewCell.xib in Resources */,
@@ -750,7 +780,9 @@
 				31A9893A190EE7A60060624C /* menu-button.png in Resources */,
 				3128A88519084142002E8F92 /* image4.jpg in Resources */,
 				31A9893B190EE7A60060624C /* menu-button@2x.png in Resources */,
+				31CD63A8191AD59B00523BE3 /* profile.png in Resources */,
 				3128A88019084142002E8F92 /* female.png in Resources */,
+				31CD640C191BFB2C00523BE3 /* RemoteNotiView.xib in Resources */,
 				3128A88219084142002E8F92 /* image1.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -785,15 +817,20 @@
 				31A9894E190EE7BD0060624C /* UIAlertView+AFNetworking.m in Sources */,
 				31A98935190EE78E0060624C /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */,
 				3128A86A1908410F002E8F92 /* PieChart.m in Sources */,
+				31CD63B7191B376200523BE3 /* PeopleCell.m in Sources */,
+				31CD6414191C17C300523BE3 /* Util.m in Sources */,
 				3128A8721908410F002E8F92 /* Venue.m in Sources */,
 				31A98950190EE7BD0060624C /* UIButton+AFNetworking.m in Sources */,
 				31A9896A190EE8580060624C /* AFURLConnectionOperation.m in Sources */,
 				3128A95A190B077A002E8F92 /* PhotoViewCell.m in Sources */,
 				3128A8A519084352002E8F92 /* LaunchViewController.m in Sources */,
 				3128A97F190CDD6E002E8F92 /* CommonDataManager.m in Sources */,
+				31CD63BA191B37A100523BE3 /* PeopleDetailViewController.m in Sources */,
 				31A98973190EE8940060624C /* UIAlertView+Blocks.m in Sources */,
 				3128A7E719083E47002E8F92 /* main.m in Sources */,
+				31CD640F191BFF5800523BE3 /* LocalNotiView.m in Sources */,
 				31A98934190EE78E0060624C /* SlideNavigationContorllerAnimatorScale.m in Sources */,
+				31CD63AB191AF8AC00523BE3 /* VenueAnnotation.m in Sources */,
 				3128A86E1908410F002E8F92 /* SignInViewController.m in Sources */,
 				31A98852190E42730060624C /* AboutViewController.m in Sources */,
 				31A98933190EE78E0060624C /* SlideNavigationContorllerAnimatorFade.m in Sources */,
@@ -807,20 +844,19 @@
 				31A98951190EE7BD0060624C /* UIImageView+AFNetworking.m in Sources */,
 				3128A8761908410F002E8F92 /* VenueTableViewCell.m in Sources */,
 				3128A8E41908F13E002E8F92 /* SignUpViewController.m in Sources */,
-				318E4D64191636AF002DAD65 /* ChatContainerViewController.m in Sources */,
 				31A98924190EE73C0060624C /* GBPathImageView.m in Sources */,
 				31A98927190EE7660060624C /* SlideNavigationController.m in Sources */,
 				3128A8741908410F002E8F92 /* VenueDetailedViewController.m in Sources */,
 				31A9894F190EE7BD0060624C /* UIAlertView+Blocks.m in Sources */,
 				318E4D67191636BC002DAD65 /* PeopleViewController.m in Sources */,
-				318E4D6D19170C5C002DAD65 /* NotificationViewController.m in Sources */,
+				31CD640A191BFB1200523BE3 /* RemoteNotiView.m in Sources */,
 				31A98970190EE8720060624C /* AFHTTPRequestOperationManager.m in Sources */,
 				31A98960190EE81A0060624C /* AFURLRequestSerialization.m in Sources */,
-				318E4D7019176AFF002DAD65 /* myAnnotation.m in Sources */,
 				3128A95F190B085B002E8F92 /* BasicProfileCell.m in Sources */,
 				31A98961190EE81A0060624C /* AFURLResponseSerialization.m in Sources */,
 				31A9884F190E42210060624C /* ChatViewController.m in Sources */,
 				31A98964190EE8370060624C /* AFURLSessionManager.m in Sources */,
+				31CD63B4191B36A000523BE3 /* WHTabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -924,6 +960,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.whispr.WHClubBook";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;

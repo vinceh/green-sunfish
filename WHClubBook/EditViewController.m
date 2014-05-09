@@ -39,12 +39,9 @@ static NSString *cellIdentifier = @"com.whispr.editTableCell ";
         UITableViewCell    *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         
     
-    
     return cell;
+    
 }
-
-
-
 
 - (void)didReceiveMemoryWarning
 {

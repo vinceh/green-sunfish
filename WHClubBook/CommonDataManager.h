@@ -14,9 +14,17 @@
 +(instancetype)sharedInstance;
 -(void)setSignUpParameters: (NSArray *) values;
 -(NSDictionary*) signupParameters;
+
 -(void) setAccessToken:(NSString *) token;
 -(NSString*) accessToken;
+
 -(void)setMyProfileImage:(UIImage*) myImage;
 -(UIImage*) myImage;
+
+-(void) setAPNStoken :(NSString *) deviveToken  withParam : (NSString*) update;
+-(NSDictionary*) accessAPNStoken;
+
+-(void) setCurrentBeacon : (NSDictionary*) beaconInfo;
+-(NSDictionary*) currentBeacon;
 
 @end

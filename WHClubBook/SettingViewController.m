@@ -12,20 +12,19 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic,strong)   NSDictionary        *myProfile;
-@property (nonatomic,assign)   BOOL editable;
-@property (nonatomic,strong)   NSArray  *values;
-@property (nonatomic,strong)   UIImage  *myImage;
+@property (nonatomic,strong)   NSDictionary *myProfile;
+@property (nonatomic,strong)   NSString     *successFlag;
+@property (nonatomic,assign)   BOOL         editable;
+@property (nonatomic,strong)   NSArray      *values;
+@property (nonatomic,strong)   UIImage      *myImage;
+@property (nonatomic,strong)   UIActivityIndicatorView *activityIndicator;
 
 @end
-
 
 @implementation SettingViewController
 
 static NSString *PhotoViewCellIdentifier = @"com.whispr.photoViewCell";
 static NSString *BasicProfileCellIdentifier = @"com.whispr.basicViewCell";
-
-
 
 - (void)viewDidLoad
 {
@@ -33,23 +32,20 @@ static NSString *BasicProfileCellIdentifier = @"com.whispr.basicViewCell";
 
     [super viewDidLoad];
     
-//    NOT YET..
-//    [self.activityIndicator startAnimating];
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.activityIndicator.alpha = 1.0;
+    self.activityIndicator.center = CGPointMake(160, 240);
+    self.activityIndicator.hidesWhenStopped = NO;
+    [self.tableView addSubview:self.activityIndicator];
     
-//    NSDictionary  *params = [[CommonDataManager sharedInstance] signupParameters];
-//    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] XXXX:params completion:^(NSString *result, NSError *error) {
-//        if(!error) {
-//      self.values =  [XX values];
-//        }
-//        
-//    }];
-//    [self.activityIndicator stopAnimating];
-//    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-    
-    self.myProfile = @{@"first_name":@"firstname", @"last_initial":@"last",@"birthday":@"11-11-2012",@"email":@"e@gmail.com",@"gender":@"M",@"avatar":@"www.xxx.xxx/xxx.jpg"};
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PhotoViewCell" bundle:nil] forCellReuseIdentifier:PhotoViewCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:@"BasicProfileCell" bundle:nil] forCellReuseIdentifier:BasicProfileCellIdentifier];
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+    
+    [self requestToServer];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -59,22 +55,26 @@ static NSString *BasicProfileCellIdentifier = @"com.whispr.basicViewCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return (section == 0) ? 1 : 5;
+	return (section == 0) ? 1 : 4;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+
 	return (section == 0) ? @"PHOTO" : @"BASIC";
 }
+////                 [cell.photoView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile"]];
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
     if(indexPath.section == 0)  {
+         NSURL *imageURL = [NSURL URLWithString:self.myProfile[@"avatar"]];
+        
          PhotoViewCell *cell = (PhotoViewCell*)[tableView dequeueReusableCellWithIdentifier:PhotoViewCellIdentifier forIndexPath:indexPath];
          switch (indexPath.row) {
             case 0:
-                 cell.photoView.image = [UIImage imageNamed:@"image1.jpg"];   //self.myImage..
+                 [cell.photoView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile"]];
                  break;
         }
         return cell;
@@ -82,24 +82,20 @@ static NSString *BasicProfileCellIdentifier = @"com.whispr.basicViewCell";
          BasicProfileCell *cell = (BasicProfileCell*)[tableView dequeueReusableCellWithIdentifier:BasicProfileCellIdentifier forIndexPath:indexPath];
          switch (indexPath.row) {
             case 0:
-                cell.keyField.text = @"FIRST NAME";
-                cell.valueField.text = @"KKKKK";  //self.values[indexPath.row]
+                 cell.keyField.text = @"FIRST NAME";
+                 cell.valueField.text = self.myProfile[@"first_name"];
                 break;
             case 1:
-                 cell.keyField.text = @"LAST NAME";  //self.values[indexPath.row]
-                 cell.valueField.text = @"KKKKK";  //self.values[indexPath.row]
+                 cell.keyField.text = @"LAST NAME";
+                 cell.valueField.text = self.myProfile[@"last_initial"];
                  break;
             case 2:
-                 cell.keyField.text = @"EMAIL";  //self.values[indexPath.row]
-                 cell.valueField.text = @"KKKKK";  //self.values[indexPath.row]
+                 cell.keyField.text = @"BIRTHDAY";
+                 cell.valueField.text = self.myProfile[@"birthday"];
                  break;
             case 3:
-                 cell.keyField.text = @"BIRTHDAY";  //self.values[indexPath.row]
-                 cell.valueField.text = @"KKKKK";  //self.values[indexPath.row]
-                 break;
-            case 4:
-                 cell.keyField.text = @"GENDER";  //self.values[indexPath.row]
-                 cell.valueField.text = @"KKKKK";  //self.values[indexPath.row]
+                 cell.keyField.text = @"GENDER";
+                 cell.valueField.text = self.myProfile[@"gender"];
                  break;
         }
         return cell;
@@ -122,19 +118,32 @@ static NSString *BasicProfileCellIdentifier = @"com.whispr.basicViewCell";
 }
 
 
-//-(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender  {
-//    if ([identifier isEqualToString:@"editSegue"]) {
-//        return NO;
-//    }
-//    return NO;
-//}
+-(void) requestToServer  {
+    
+  [self.activityIndicator startAnimating];
+    NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken]};
+    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] profile:params completion:^(NSDictionary *result, NSError *error) {
+        
+        if (result[@"success"])  {
+            self.successFlag = @"YES";
+            self.myProfile = result[@"data"];
+            [self.tableView reloadData];
+            [self.activityIndicator  stopAnimating];
+        }
+    }];
+    
+[self.activityIndicator  stopAnimating];
+    
+[UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
 
+}
 
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender  {
+    if ([identifier isEqualToString:@"editSegue"] && [self.successFlag isEqualToString:@"YES"]) {
+        
+        return YES;
+    }
+    return NO;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -146,9 +155,8 @@ static NSString *BasicProfileCellIdentifier = @"com.whispr.basicViewCell";
         switch (indexPath.row) {
             case 0:  key=@"first_name";    break;
             case 1:  key=@"last_initial";  break;
-            case 2:  key=@"email";         break;
-            case 3:  key=@"birthday";      break;
-            case 4:  key=@"gender";        break;
+            case 2:  key=@"birthday";      break;
+            case 3:  key=@"gender";        break;
         }
     }
     
@@ -157,6 +165,14 @@ static NSString *BasicProfileCellIdentifier = @"com.whispr.basicViewCell";
         EditViewController  *editVC  = [segue destinationViewController];
         editVC.editableField = @{key:self.myProfile[key]};
     }
+}
+
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Slider menu delegation

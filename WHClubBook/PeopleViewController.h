@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PeopleCell.h"
+#import "PeopleDetailViewController.h"
 
 @interface PeopleViewController : UICollectionViewController
 

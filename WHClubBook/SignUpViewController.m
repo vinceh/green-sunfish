@@ -20,6 +20,7 @@
 @property(nonatomic,weak) UITextField  *email;
 @property(nonatomic,weak) UITextField  *birthday;
 @property(nonatomic,weak) UITextField  *gender;
+@property(nonatomic,weak) NSString     *genderForServer;
 
 @property(nonatomic,strong) UIButton     *registerButton;
 @property(nonatomic,strong) UIDatePicker *datePicker;
@@ -29,11 +30,7 @@
 @property(nonatomic,strong) NSString  *response;
 
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
-
-
-
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
-- (IBAction)register:(id)sender;
 
 @end
 
@@ -72,6 +69,8 @@
     self.picker = [[UIPickerView alloc] init];
     self.picker.delegate = self;
     self.picker.showsSelectionIndicator = YES;
+    
+    
 
 }
 
@@ -203,6 +202,7 @@
     
     UILabel *genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 100, 32)];
     genderLabel.text = [row == 0 ? @"male" : @"female" uppercaseString];
+    self.gender.text = @"Male";
     genderLabel.textAlignment = NSTextAlignmentLeft;
     genderLabel.backgroundColor = [UIColor clearColor];
     
@@ -212,13 +212,14 @@
     
     return rowView;
 }
+
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     
     if ([self.picker selectedRowInComponent:0] == 0) {
-        self.gender.text = @"male";
+        self.gender.text = @"Male";
     } else {
-        self.gender.text = @"female";
+        self.gender.text = @"Female";
     }
 }
 
@@ -340,6 +341,9 @@
         [self alertView:@"Empty field" withParam1:@"Pleas fill all the fields" withParam2:emptyTextField];
         return NO;
     }
+    
+    self.genderForServer = ([self.gender.text isEqualToString:@"Male"]) ? @"M" : @"F";
+    
     return YES;
 }
 
@@ -357,13 +361,18 @@
 
 
 #pragma mark - cloud integration
+//
+//- (IBAction)register:(id)sender {
+//    
+//    NSArray  *values = @[self.email.text, self.gender.text, self.birthday.text, self.firstname.text, self.lastname.text];
+//    [[CommonDataManager sharedInstance] setSignUpParameters:values];
+//}
 
-- (IBAction)register:(id)sender {
-    
-    NSArray  *values = @[self.email.text, self.gender.text, self.birthday.text, self.firstname.text, self.lastname.text];
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender  {
+    NSArray  *values = @[self.email.text, self.genderForServer, self.birthday.text, self.firstname.text, self.lastname.text];
     [[CommonDataManager sharedInstance] setSignUpParameters:values];
-
 }
+
 
 -(void) alertView:(NSString*) title  withParam1:(NSString*) msg  withParam2:(UITextField*) textField {
 

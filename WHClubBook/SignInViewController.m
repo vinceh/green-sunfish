@@ -52,4 +52,20 @@
 //}
 
 
+-(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender  {
+    
+    
+    if([[CommonDataManager sharedInstance] accessToken] == nil)  {
+        
+        WHAlert(@"Notice", @"Sign up first", nil);
+        return NO;
+    }
+    return YES;
+}
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender  {
+    
+    [segue destinationViewController];
+}
+
 @end

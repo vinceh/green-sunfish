@@ -77,7 +77,7 @@
 				vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"VenueViewController"];
 				break;
 			case 1:
-				vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"ChatViewController"];
+				vc = [mainStoryboard instantiateViewControllerWithIdentifier: @"WHTabBarController"];
 				break;
 
         }

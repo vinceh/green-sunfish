@@ -1,18 +1,16 @@
 //
-//  ChatContainerViewController.m
-//  WHClubBook
+//  WHTabBarController.m
+//  SlideMenu
 //
-//  Created by yong choi on 2014. 5. 4..
-//  Copyright (c) 2014년 whispr. All rights reserved.
-//
+//  Created by yong choi on 2014. 5. 5..
 
-#import "ChatContainerViewController.h"
+#import "WHTabBarController.h"
 
-@interface ChatContainerViewController ()
+@interface WHTabBarController ()
 
 @end
 
-@implementation ChatContainerViewController
+@implementation WHTabBarController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,5 +43,17 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - SlideNavigationController Methods -
+
+- (BOOL)slideNavigationControllerShouldDisplayLeftMenu
+{
+	return YES;
+}
+
+- (BOOL)slideNavigationControllerShouldDisplayRightMenu
+{
+	return NO;
+}
 
 @end

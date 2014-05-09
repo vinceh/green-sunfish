@@ -11,11 +11,14 @@
 #import "SlideNavigationContorllerAnimatorScale.h"
 #import "MenuViewController.h"
 #import "CommonDataManager.h"
-#import "NotificationViewController.h"
-
+#import "WHHTTPClient.h"
 #import <CoreLocation/CoreLocation.h>
 #import "ESTBeaconManager.h"
 #import "AFNetworkReachabilityManager.h"
+#import "UIAlertView+AFNetworking.h"
+#import "RemoteNotiView.h"
+#import "LocalNotiView.h"
+#import "VenueViewController.h"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,ESTBeaconManagerDelegate>

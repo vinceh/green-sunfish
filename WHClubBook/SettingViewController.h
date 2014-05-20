@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SlideNavigationController.h"
 #import "PhotoViewCell.h"
 #import "BasicProfileCell.h"
-#import "EditViewController.h"
+
 #import "CommonDataManager.h"
 #import "WHHTTPClient.h"
+#import "UIAlertView+AFNetworking.h"
+#import "UIImageView+AFNetworking.h"
 
-@interface SettingViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, SlideNavigationControllerDelegate>
+
+
+@interface SettingViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @end

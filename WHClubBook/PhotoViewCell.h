@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface PhotoViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *photoView;
+@property (weak, nonatomic) IBOutlet UIImageView *photoView1;
+@property (weak, nonatomic) IBOutlet UIImageView *photoView2;
+@property (weak, nonatomic) IBOutlet UIImageView *photoView3;
+
 - (IBAction)changePhoto:(id)sender;
 
 @end

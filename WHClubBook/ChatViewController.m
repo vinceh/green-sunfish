@@ -23,12 +23,23 @@
     return self;
 }
 
+-(void) reloadView {
+    
+    NSLog(@" %s" , __func__);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+//  //  [self.tabBarController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]]];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -45,17 +56,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-#pragma mark - SlideNavigationController Methods -
-- (BOOL)slideNavigationControllerShouldDisplayLeftMenu
-{
-	return YES;
-}
-
-- (BOOL)slideNavigationControllerShouldDisplayRightMenu
-{
-	return NO;
-}
-
 
 @end

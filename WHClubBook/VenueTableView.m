@@ -41,12 +41,11 @@ const static char * venueTableViewCellIndexPathKey = "SwipeDeleteTableViewCellIn
 @end
 
 @interface VenueTableView() {
+    
     UISwipeGestureRecognizer * _leftGestureRecognizer;
     UISwipeGestureRecognizer * _rightGestureRecognizer;
     UITapGestureRecognizer * _tapGestureRecognizer;
-    
     UIButton * _deleteButton;
-    
     NSIndexPath * _editingIndexPath;
 }
 

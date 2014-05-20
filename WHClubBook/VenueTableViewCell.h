@@ -11,13 +11,10 @@
 
 @interface VenueTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIView *vipView;
-@property (weak, nonatomic) IBOutlet UIView *regularView;
-@property (weak, nonatomic) IBOutlet UIView *tempView;
-@property (weak, nonatomic) IBOutlet UILabel *address;
-@property (weak, nonatomic) IBOutlet UIImageView *mapIndicator;
-@property (weak, nonatomic) IBOutlet UILabel *vipPercent;
-@property (weak, nonatomic) IBOutlet UILabel *regPercent;
+@property (weak, nonatomic) IBOutlet UILabel *guestWaitingTime;
+@property (weak, nonatomic) IBOutlet UILabel *regWaitingTime;
 @property (weak, nonatomic) IBOutlet UILabel *degree;
+@property (weak, nonatomic) IBOutlet UILabel *distance;
+@property (weak, nonatomic) IBOutlet UIImageView *bgImageView;
 
 @end

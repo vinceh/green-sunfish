@@ -7,24 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Accounts/Accounts.h>
-#import <Social/Social.h>
+#import <MapKit/MapKit.h>
+#import "UIImageView+AFNetworking.h"
+#import "VenueAnnotation.h"
 
-@interface VenueDetailedViewController : UIViewController<UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
-@property (weak, nonatomic) IBOutlet UILabel *venueInfoLabel;
-@property (weak, nonatomic) IBOutlet UITableView *twitterTableView;
-@property (weak, nonatomic) IBOutlet UIButton *buyCover;
-
-@property(nonatomic,strong) NSString *venueName;
-@property(nonatomic,strong) UITableView *tweetTableView;
-@property (strong, nonatomic) NSArray *dataSource;
-@property (strong, nonatomic) NSDictionary  *venue;
-
-
-- (IBAction)tableCover:(id)sender;
-
-
+@interface VenueDetailedViewController : UIViewController<UIScrollViewDelegate>
+@property (strong, nonatomic) NSDictionary  *venueInfo;
+@property (strong, nonatomic) NSString      *meter;
 @end

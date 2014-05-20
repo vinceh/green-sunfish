@@ -13,6 +13,8 @@
 @property(nonatomic,strong) UIImage  *myImage;
 @property(nonatomic,strong) NSDictionary  *signUp;
 @property(nonatomic,strong) NSString  *token;
+@property(nonatomic,strong) NSDictionary  *beaconInfo;
+
 @end
 
 @implementation CommonDataManager
@@ -32,20 +34,20 @@ static CommonDataManager *_sharedInstance = nil;
 
 -(void)setSignUpParameters: (NSArray *) values{
     
-     self.signUp =  @{@"user[email]":values[0],
-                                @"user[gender]":values[1],
-                                @"user[birthday]":values[2],
-                                @"user[first_name]":values[3],
-                                @"user[last_initial]":values[4]};
-    
+     self.signUp =  @{      @"user[email]":values[0],
+                           @"user[gender]":values[1],
+                         @"user[birthday]":values[2],
+                       @"user[first_name]":values[3],
+                     @"user[last_initial]":values[4]};
     
     NSLog(@" sign  %@", self.signUp);
 
 }
 
+
+
 -(NSDictionary*) signupParameters {
     
-        NSLog(@" befire return sign  %@", self.signUp);
     return self.signUp;
 }
 
@@ -65,12 +67,37 @@ static CommonDataManager *_sharedInstance = nil;
     NSLog(@" write  key==>  %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"myToken"]);
 }
 
--(NSString*) accessToken:(NSString *) token  {
+-(NSString*) accessToken  {
     
     NSLog(@" read  key==>  %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"myToken"]);
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"myToken"];
 
 }
+
+-(void) setAPNStoken :(NSString *) deviveToken  withParam : (NSString*) update{
+    
+     NSDictionary  *apnsToken = @{@"key":deviveToken,@"update":update};
+    [[NSUserDefaults standardUserDefaults] setObject:apnsToken forKey:@"APNSToken"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSLog(@" apns key write ==>  %@", [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"APNSToken"]);
+}
+
+
+-(NSDictionary*) accessAPNStoken {
+    
+    NSLog(@" apns  key read ==>  %@", [[NSUserDefaults standardUserDefaults]  dictionaryForKey:@"APNSToken"]);
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"APNSToken"];
+}
+
+
+-(void) setCurrentBeacon : (NSDictionary*) beaconInfo {
+    self.beaconInfo = beaconInfo;
+}
+
+-(NSDictionary*) currentBeacon {
+    return self.beaconInfo;
+}
+
 
 
 @end

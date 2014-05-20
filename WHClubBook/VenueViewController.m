@@ -8,62 +8,116 @@
 
 #import "VenueViewController.h"
 
+@interface VenueViewController () <CLLocationManagerDelegate>
 
-@interface VenueViewController ()
+@property (weak,nonatomic)    IBOutlet VenueTableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
-@property (weak, nonatomic) IBOutlet VenueTableView *tableView;
-@property(nonatomic, strong) NSMutableArray *venues;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (strong, nonatomic) CLGeocoder *geocoder;
-
-
-- (IBAction)selectVenue:(UISegmentedControl *)sender;
-
+@property (nonatomic,strong)  NSMutableArray *allVenues;
+@property (nonatomic,strong)  NSMutableArray *myVenueList;
+@property (nonatomic,strong)  NSMutableArray *venuesForDisplay;
+@property (nonatomic,strong)  UIRefreshControl  *refreshControl;
+@property (nonatomic,strong) CLGeocoder *geocoder;
+@property (nonatomic,strong) CLLocationManager *locationManager;
+@property (nonatomic,assign) CLLocationDegrees  latitude;
+@property (nonatomic,assign) CLLocationDegrees  longitude;
+@property (nonatomic,strong)  UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,strong) NSMutableDictionary *placeDictionary;
 
 @end
 
+
 static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
+static BOOL  favoriteMode = NO;
+VenueTableViewCell *cell;
 
 @implementation VenueViewController
 
-
-#pragma mark- initial load view
-
-
 #pragma  mark - Viewcontroller delegate
-
--(void)viewWillAppear:(BOOL)animated {
-    
-}
-
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Venue";
-    self.segmentControl.selectedSegmentIndex = 0;
-    self.segmentControl.tintColor = [UIColor redColor];
-    self.segmentControl.hidden = YES;
+    UIView *refreshView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    [self.tableView insertSubview:refreshView atIndex:0]; //the tableView is a IBOutlet
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.tintColor = [UIColor redColor];
+    [self.refreshControl addTarget:self action:@selector(requestToServer) forControlEvents:UIControlEventValueChanged];
+
+    /* NSMutableAttributedString *refreshString = [[NSMutableAttributedString alloc] initWithString:@"Pull To Refresh"];
+     [refreshString addAttributes:@{NSForegroundColorAttributeName : [UIColor grayColor]} range:NSMakeRange(0, refreshString.length)];
+     refreshControl.attributedTitle = refreshString; */
+    [refreshView addSubview:self.refreshControl];
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.activityIndicator.alpha = 1.0;
+    self.activityIndicator.center = CGPointMake(160, 240);
+    self.activityIndicator.hidesWhenStopped = YES;
+    [self.tableView addSubview:self.activityIndicator];
+
+    
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    _locationManager.delegate = self;
+//    [_locationManager startUpdatingLocation];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:CGRectMake(0.0f, 0.0f, 25.0f, 40.0f)];
+    [btn addTarget:self action:@selector(showMyFavorite:) forControlEvents:UIControlEventTouchUpInside];
+    [btn setImage:[UIImage imageNamed:@"star.jpg"] forState:UIControlStateNormal];
+    UIBarButtonItem  *favoriteButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.rightBarButtonItem = favoriteButton;
+
     [self.tableView registerNib:[UINib nibWithNibName:@"VenueTableViewCell" bundle:nil] forCellReuseIdentifier:VenueViewCellIdentifier];
-    [self requestToServer];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 }
 
+-(void) reloadView {
+
+    [self requestToServer];
+    [_locationManager startUpdatingLocation];
+    [self updateTableData];
+
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+}
+
+-(void) viewWillAppear:(BOOL)animated  {
+
+    [self requestToServer];
+    [_locationManager startUpdatingLocation];
+    [self updateTableData];
+
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+    
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+    [_locationManager startUpdatingLocation];
+    [_locationManager stopUpdatingLocation];
+    
+}
 
 -(void) viewWillLayoutSubviews  {
     self.tableView.frame = CGRectMake(0, self.topLayoutGuide.length + 52,CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
     self.tableView.contentInset = UIEdgeInsetsMake(-3, 0, 0, 0);
-    self.segmentControl.frame = CGRectMake(90, self.topLayoutGuide.length + 5,150,40);
+}
+
+
+
+-(void) updateTableData{
+    [self.tableView reloadData];
 }
 
 
 #pragma mark-  tableview section
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView  {
-    
-    return self.venues.count;
+    return self.venuesForDisplay.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return  self.venues[section][@"name"];
+    return  self.venuesForDisplay[section][@"name"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView  numberOfRowsInSection:(NSInteger)section {
@@ -78,37 +132,50 @@ static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView   cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    VenueTableViewCell *cell = (VenueTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VenueViewCellIdentifier forIndexPath:indexPath];
+   
     
-    NSDictionary *nightlyInfo  = self.venues[indexPath.row][@"nightly"];
-    NSUInteger guestWaitTime   =  (NSUInteger) nightlyInfo[@"guest_wait_time"];
-    NSUInteger regularWaitTime =  (NSUInteger) nightlyInfo[@"regular_wait_time"];
+    
+    cell = (VenueTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VenueViewCellIdentifier
+                                                                 forIndexPath:indexPath];
+    UIButton * addBtn,*deleteBtn;
+    
+    NSURL  *imageURL = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"club" ofType:@"jpg"]];
+    [cell.bgImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"loading"]];
 
-     UIButton * favorite = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [favorite setTitle:@"ADD TO FAV" forState:UIControlStateNormal];
-    [favorite setFrame:CGRectMake(230, -4, 90, 24)];
-    [favorite setTag:indexPath.row];
-    [favorite.titleLabel setFont:[UIFont systemFontOfSize:13]];
-    [favorite addTarget:self action:@selector(addMyfavorite:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:favorite];
+    NSDictionary *nightlyInfo  = self.venuesForDisplay[indexPath.section][@"nightly"];
+    cell.guestWaitingTime.text =  [NSString stringWithFormat:@"%@", nightlyInfo[@"guest_wait_time"]];
+    cell.regWaitingTime.text   =  [NSString stringWithFormat:@"%@", nightlyInfo[@"regular_wait_time"]];
     
-    cell.vipView = (UIView*)[cell viewWithTag:1];
-    cell.vipView.layer.cornerRadius = CGRectGetWidth(cell.vipView.frame) / 2;
-    
-    cell.regularView = (UIView*) [cell viewWithTag:2];
-    cell.regularView.layer.cornerRadius = CGRectGetWidth(cell.regularView.frame) / 2;
-    cell.tempView = (UIView*)[cell viewWithTag:3];
-    cell.tempView.layer.cornerRadius = CGRectGetWidth(cell.tempView.frame) / 2;
-    
-    cell.vipPercent.text = @"20%";
-    cell.regPercent.text = @"30%";
+    self.latitude   =  [self.venuesForDisplay[indexPath.section][@"latitude"] doubleValue];
+    self.longitude  =  [self.venuesForDisplay[indexPath.section][@"longitude"] doubleValue];
+    cell.distance.text = [self updateDistances];
+
     cell.degree.text = @"20°";
-    cell.address.text =  self.venues[indexPath.row][@"address"];
-//    [self coordinates:cell.address.text];
+    
+ 
+    if (favoriteMode) {
+        [addBtn removeFromSuperview];
+        deleteBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [deleteBtn setFrame:CGRectMake(250, 10, 50, 50)];
+        [deleteBtn setBackgroundImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+        [deleteBtn setTag:indexPath.section];
+        [deleteBtn addTarget:self action:@selector(removeMyfavorite:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.bgImageView addSubview:deleteBtn];
+
+    } else  {
+        [deleteBtn removeFromSuperview];
+        addBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [addBtn setFrame:CGRectMake(250, 10, 50, 50)];
+        [addBtn setBackgroundImage:[UIImage imageNamed:@"star.jpg"] forState:UIControlStateNormal];
+        [addBtn setTag:indexPath.section];
+        addBtn.exclusiveTouch = YES;
+        [addBtn addTarget:self action:@selector(addMyfavorite:) forControlEvents:UIControlEventTouchDownRepeat];
+        [cell.bgImageView addSubview:addBtn];
+    }
+
     return cell;
 }
 
-//venueDetailSegue
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -127,94 +194,235 @@ static NSString  *VenueViewCellIdentifier = @"com.whispr.VeneuViewCell";
     return lbl;
 }
 
-
-#pragma mark - cloud  integration
-
+#pragma mark -  cloud  integration
 -(void) requestToServer {
     
     [self.activityIndicator startAnimating];
-    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] getVenueList:nil completion:^(NSArray *results, NSError *error) {
+    NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken]};
+    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] getVenueList:params
+                                                             completion:^(NSArray *results, NSError *error) {
         if (!error) {
-            //   [self.venues removeAllObjects];
-            self.venues = [NSMutableArray arrayWithArray:results];
+            self.allVenues = [NSMutableArray arrayWithArray:results];
+            if (!favoriteMode) {
+                self.venuesForDisplay = [NSMutableArray arrayWithArray:results];  //in case of favoride mode, skip..
+            }
+            self.tableView.delegate =self;
+            self.tableView.dataSource = self;
             [self.tableView reloadData];
             [self.activityIndicator stopAnimating];
-            self.segmentControl.hidden = NO;
+            [self writeToLocalFromServer];
+            [self.activityIndicator stopAnimating];
         }
     }];
-    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+    
+ //   [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+  //  [self.activityIndicator stopAnimating];
+
     //[self.refreshControl setRefreshingWithStateOfTask:task];
-    
+      [self.refreshControl endRefreshing];
 }
 
+//    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationTop];
 
--(void) addMyfavorite:(id)sender  {
-    
-}
+//-(void) populateVenueList:(id) sender {
+//
+//    [self.tableView reloadData];
+//    [self.activityIndicator stopAnimating];
+//    
+//}
 
 
-- (void) coordinates:(NSString*) clubAddress  {
-    
-    if (!self.geocoder) {
-        self.geocoder = [[CLGeocoder alloc] init];
+
+//always overwrite..myVenuelist initialization..
+-(void) writeToLocalFromServer   {
+//
+//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+//    dispatch_async(queue, ^{
+//    
+    if(self.myVenueList == nil)  {
+        self.myVenueList  = [NSMutableArray array];
     }
+    else  {
+        [self.myVenueList removeAllObjects];
+    }
+    
+    NSLog(@" all venue  %@", self.allVenues);
+        for(id obj in self.allVenues) {
+            if ([obj[@"is_favourite"] boolValue]) {
+                [self.myVenueList addObject:obj];
+                NSLog(@" from server %@", self.myVenueList);
+            }
+        }
+        [[Util sharedInstance] writeToFile:@"myVenueList.dat" fileData:self.myVenueList];
+ //   });
+}
 
-    [self.geocoder geocodeAddressString:clubAddress completionHandler:^(NSArray *placemarks, NSError *error) {
+-(NSMutableArray *)readFromLocal {
+    return   [[Util sharedInstance] retrieveFromFile:@"myVenueList.dat"];
+}
 
-        if ([placemarks count] > 0) {
-            CLPlacemark *placemark = [placemarks objectAtIndex:0];
-            CLLocation *location = placemark.location;
-            CLLocationCoordinate2D coordinate = location.coordinate;
-            NSLog(@" lat %f", coordinate.latitude);
-            NSLog(@" lon %f", coordinate.longitude);
-           
+
+//always read from file
+-(void) showMyFavorite:(id) sender {
+    
+    if ([self readFromLocal] == nil) {
+        WHAlert(@"alert", @"no data", nil);
+    }
+    else  {
+        [self.activityIndicator startAnimating];
+        
+        favoriteMode = !favoriteMode;
+        if (favoriteMode) {
+            NSLog(@" favorite mode");
+            [self.venuesForDisplay removeAllObjects];
+            [self.myVenueList removeAllObjects];
+            NSMutableArray *venueListFromLocal = [self readFromLocal];
+            NSLog(@" switch...showMyFav from file ==> %@", venueListFromLocal);
+            [self.venuesForDisplay addObjectsFromArray:venueListFromLocal];
+            [self.myVenueList addObjectsFromArray:venueListFromLocal];
+        }
+        else  {
+            [self.venuesForDisplay removeAllObjects];
+            [self.venuesForDisplay addObjectsFromArray:self.allVenues];
+        }
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+        
+    }
+}
+
+
+////myvenueList, file  should same..
+-(void) addMyfavorite:(UIButton*)sender  {
+
+    sender.enabled = NO;
+    if ([self contains:self.allVenues[sender.tag]]) {
+        WHAlert(@"Alert", @"dup",nil);
+    } else {
+              [self.activityIndicator startAnimating];
+              NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken], @"venue_id":self.allVenues[sender.tag][@"id"]};
+              NSURLSessionTask  *task = [[WHHTTPClient sharedClient] addFavoriteVenue:params completion:^(NSDictionary *results, NSError *error) {
+
+        if (!error) {
+            NSMutableDictionary *newVenue = [self.allVenues[sender.tag] mutableCopy];
+            [newVenue  setObject:@YES forKey:@"is_favourite"];
+            
+            NSMutableArray *venueListFromLocal = [self readFromLocal];
+            NSLog(@" from file  %@", venueListFromLocal);
+            
+            if ([venueListFromLocal count] > 0) {
+                 [venueListFromLocal addObject:newVenue];
+                [[Util sharedInstance] writeToFile:@"myVenueList.dat" fileData:venueListFromLocal];
+                NSLog(@"  after adding data from fhte file %@", [self readFromLocal]);
+            }else {
+                NSLog(@" count is zero  %@", newVenue);
+                [[Util sharedInstance] writeToFile:@"myVenueList.dat" fileData:[NSMutableArray arrayWithObject:newVenue]];
+                                NSLog(@"  after adding data from fhte file(only one) %@", [self readFromLocal]);
+            }
         }
     }];
+//TODO: message..
+//TODO: handle..this
+        [self.activityIndicator stopAnimating];
+  //      [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+    }
 }
 
 
+-(void)removeMyfavorite:(UIButton*)sender  {
+   
+    NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken], @"venue_id":self.myVenueList[sender.tag][@"id"]};
+     NSLog(@"  removing2");
+    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] removeFavoriteVenue:params completion:^(NSDictionary *results, NSError *error) {
 
+        if (!error) {
+            
+            NSLog(@"  before  removing %@", self.myVenueList);
+            [self.myVenueList removeObjectAtIndex:sender.tag];
+            NSLog(@" sender tag  %ld", sender.tag);
+            NSLog(@"  after removing %@", self.myVenueList);
+             [[Util sharedInstance] writeToFile:@"myVenueList.dat" fileData:self.myVenueList];
+            [self.venuesForDisplay removeAllObjects];
+            [self.venuesForDisplay addObjectsFromArray:[self readFromLocal]];  // prevent accessing file,,
+            [self.tableView reloadData];
+        }
+        else  {
+            //message.. later..
+        }
+        
+//        [self.activityIndicator stopAnimating];
+    }];
+    [self.activityIndicator stopAnimating];
+//    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+
+
+
+    
+
+//    [self.tableView reloadData];
+    
+    
+    
+//    [UIView transitionWithView: self.tableView
+//                      duration: 0.35f
+//                       options: UIViewAnimationOptionTransitionCrossDissolve
+//                    animations: ^(void)
+//     {
+//         [self.tableView reloadData];
+//     }
+//                    completion: ^(BOOL isFinished)
+//     {
+//         /* TODO: Whatever you want here */
+//     }];
+}
+
+
+-(BOOL) contains:(NSDictionary *) venue {
+    
+    NSLog(@"  %s", __func__);
+    
+    __block BOOL result = NO;
+    NSMutableArray *currentMyVenues = [[Util sharedInstance] retrieveFromFile:@"myVenueList.dat"];
+    if (currentMyVenues != nil ) {
+        [currentMyVenues enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            
+            if ([obj[@"id"] isEqualToNumber:venue[@"id"]]) {
+                result = YES;
+            }
+        }];
+    }
+    return result;
+}
+
+#pragma mark - CLLocationManagerDelegate
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    [self updateTableData];
+}
+
+-(NSString*) updateDistances {
+    
+        CLLocation *venueLocation = [[CLLocation alloc] initWithLatitude:self.latitude
+                                                               longitude:self.longitude];
+    
+        CLLocation *myLocation = [[CLLocation alloc] initWithLatitude:_locationManager.location.coordinate.latitude
+                                                            longitude:_locationManager.location.coordinate.longitude];
+        CLLocationDistance distance = [venueLocation distanceFromLocation:myLocation];
+        return [NSString stringWithFormat:@"%.0fkm", distance / 1000];
+}
 
 #pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
     VenueDetailedViewController  *venueDetailedVC = [segue destinationViewController];
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    venueDetailedVC.venue = self.venues[indexPath.section];
-    venueDetailedVC.hidesBottomBarWhenPushed  = YES;
-//    venueDetailedVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    venueDetailedVC.venueInfo = self.venuesForDisplay[indexPath.section];
+    venueDetailedVC.meter = cell.distance.text;
+    
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-
-- (IBAction)selectVenue:(UISegmentedControl *)sender {
-    
-    switch (sender.selectedSegmentIndex) {
-        case 0:
-            [self requestToServer];
-            break;
-        case 1:
-            [self requestToServer];  //with my list..
-            break;
-    }
-}
-
-
-#pragma mark - SlideNavigationController Methods -
-- (BOOL)slideNavigationControllerShouldDisplayLeftMenu
-{
-	return YES;
-}
-
-- (BOOL)slideNavigationControllerShouldDisplayRightMenu
-{
-	return NO;
 }
 
 @end

@@ -1,18 +1,18 @@
 //
-//  ChatViewController.m
+//  MePrivateViewController.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 24..
+//  Created by yong choi on 2014. 5. 16..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
-#import "ChatViewController.h"
+#import "MePrivateViewController.h"
 
-@interface ChatViewController ()
+@interface MePrivateViewController ()
 
 @end
 
-@implementation ChatViewController
+@implementation MePrivateViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -23,23 +23,12 @@
     return self;
 }
 
--(void) reloadView {
-    
-    NSLog(@" %s" , __func__);
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     // Do any additional setup after loading the view.
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-//  //  [self.tabBarController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]]];
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

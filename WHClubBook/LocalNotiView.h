@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WHTabBarController.h"
 
 @interface LocalNotiView : UIView
-- (IBAction)dismiss:(id)sender;
 
+-(void) setup;
+- (void)showInView:(UIView *)aView animated:(BOOL)animated;
 @end

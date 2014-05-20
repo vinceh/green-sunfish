@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dressCode;
 @property (weak, nonatomic) IBOutlet UILabel *distance;
 
+
 @property (nonatomic, strong) NSArray *imageArrayURL;
 @property (nonatomic, strong) UIPageControl  *pageControl;
 @property (nonatomic, retain) MKPolyline *routeLine; //your line
@@ -59,7 +60,6 @@ static NSString *CellIdentifier = @"com.whispr.TwitterCell";
 //    
 //    [self.mapView addOverlay:self.routeLine];
 //    
-
     
     [self setupView];
 }
@@ -117,9 +117,11 @@ static NSString *CellIdentifier = @"com.whispr.TwitterCell";
 
 
 -(void) venueMap  {
- 
-     CLLocationCoordinate2D coordinate = self.venueLocation.coordinate;
 
+  double latitude  = [self.venueInfo[@"latitude"] doubleValue];
+  double longitude = [self.venueInfo[@"longitude"] doubleValue];
+  
+   CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
     VenueAnnotation *annotation = [[VenueAnnotation alloc] initWithCoordinate:coordinate title:self.venueInfo[@"name"]];
     [self.mapView addAnnotation:annotation];
 

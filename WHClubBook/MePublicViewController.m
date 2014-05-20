@@ -1,18 +1,18 @@
 //
-//  AboutViewController.m
+//  MePublicViewController.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 25..
+//  Created by yong choi on 2014. 5. 16..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
-#import "AboutViewController.h"
+#import "MePublicViewController.h"
 
-@interface AboutViewController ()
+@interface MePublicViewController ()
 
 @end
 
-@implementation AboutViewController
+@implementation MePublicViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,16 +45,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-#pragma mark - SlideNavigationController Methods -
-- (BOOL)slideNavigationControllerShouldDisplayLeftMenu
-{
-	return YES;
-}
-
-- (BOOL)slideNavigationControllerShouldDisplayRightMenu
-{
-	return NO;
-}
-
 
 @end

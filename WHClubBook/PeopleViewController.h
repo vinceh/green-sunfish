@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "PeopleCell.h"
 #import "PeopleDetailViewController.h"
+#import "WHHTTPClient.h"
 
-@interface PeopleViewController : UICollectionViewController
 
+@interface PeopleViewController : UICollectionViewController<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
+
+-(void) reloadView;
 @end

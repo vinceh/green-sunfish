@@ -18,10 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Sign In";
-//    
-//    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"V" style:UIBarButtonItemStyleBordered target:self action:@selector(back:)];
-//    self.navigationItem.leftBarButtonItem=newBackButton;
+
     
 }
 
@@ -38,28 +35,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-//- (IBAction) back:(id)sender
-//{
-//    
-//    CATransition* transition = [CATransition animation];
-//    transition.duration = 0.2;
-//    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//
-//    transition.type =  kCATransitionReveal;
-//    transition.subtype = kCATransitionFromBottom;
-//    [self.navigationController.view.layer addAnimation:transition forKey:nil];
-//    [[self navigationController] popViewControllerAnimated:NO];
-//}
-
-
 -(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender  {
-    
-    
-    if([[CommonDataManager sharedInstance] accessToken] == nil)  {
-        
-        WHAlert(@"Notice", @"Sign up first", nil);
+
+    if ([[CommonDataManager sharedInstance] accessToken] == nil && [identifier isEqualToString:@"mainViewSegue"])  {
+       WHAlert(@"Notice", @"Sign up first", nil);
         return NO;
     }
+    if ([identifier isEqualToString:@"launchViewSegue"])  {
+        return YES;
+    }
+    
     return YES;
 }
 

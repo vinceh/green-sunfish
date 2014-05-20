@@ -2,123 +2,111 @@
 //  AppDelegate.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 23..
 //  Copyright (c) 2014년 whispr. All rights reserved.
-//
 
 #import "AppDelegate.h"
 @interface AppDelegate()
 
+@property (nonatomic, strong)  CLLocationManager *locationManager;
+@property (nonatomic, strong)  NSString  *major;    //beacon major no
+@property (nonatomic, strong)  NSString  *minor;    //beacon minor no
 
-@property (nonatomic, strong) ESTBeaconManager *beaconManager;
-@property (nonatomic, strong) ESTBeaconRegion  *beaconRegion;
-@property (nonatomic, strong)  NSString  *major;
-@property (nonatomic, strong)  NSString  *minor;
 @end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
     //Remote notification
     NSDictionary *remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if(remoteNotification != nil)
     {
-        [self application:application didFinishLaunchingWithOptions:remoteNotification];
+        int badgeCount = (int)[UIApplication sharedApplication].applicationIconBadgeNumber;
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeCount];
     }
     
-    //Local notification
+//    Local notification
     UILocalNotification *locationNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-
     if (locationNotification) {
         application.applicationIconBadgeNumber = 1;
-    } else  {
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"bundle: nil];
-        MenuViewController *leftMenu = (MenuViewController*)[mainStoryboard
-                                                             instantiateViewControllerWithIdentifier: @"MenuViewController"];
-        leftMenu.cellIdentifier = @"leftMenuCell";
-        [SlideNavigationController sharedInstance].leftMenu = leftMenu;
-        
-        id <SlideNavigationContorllerAnimator> revealAnimator;
-        revealAnimator = [[SlideNavigationContorllerAnimatorScale alloc] init];
-        [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
-            [SlideNavigationController sharedInstance].menuRevealAnimator = revealAnimator;
-        }];
-    
-        
-        //APNS
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-                                                                             UIRemoteNotificationTypeAlert|
-                                                                             UIRemoteNotificationTypeBadge|
-                                                                             UIRemoteNotificationTypeSound];
     }
     
-    //Network reachability
-    AFNetworkReachabilityManager *reachability = [AFNetworkReachabilityManager sharedManager];
-    [reachability startMonitoring];
-    [reachability setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusNotReachable:
-                WHAlert(@"Error", @"network is not available",nil);
-                break;
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-                break;
-            case AFNetworkReachabilityStatusUnknown:
-                break;
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-                break;
-        }
-    }];
-
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+                                                                         UIRemoteNotificationTypeAlert|
+                                                                         UIRemoteNotificationTypeBadge|
+                                                                         UIRemoteNotificationTypeSound];
     
     //Ibeacon starting and running in background
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    CLBeaconRegion *region;
+    
+    region = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc]
+                                        initWithUUIDString:@"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6"]
+                                                identifier: @"region1"];
+    
+    region.notifyOnEntry = YES;
+    region.notifyOnExit = YES;
+    region.notifyEntryStateOnDisplay = YES;
 
-    self.beaconManager = [[ESTBeaconManager alloc] init];
-    self.beaconManager.delegate = self;
-    self.beaconRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-                                                            identifier:@"region1"];
-    self.beaconRegion.notifyOnEntry = YES;
-    self.beaconRegion.notifyOnExit = YES;
-    self.beaconRegion.notifyEntryStateOnDisplay = YES;
-    [self.beaconManager startMonitoringForRegion:self.beaconRegion];
-    [self.beaconManager startRangingBeaconsInRegion:self.beaconRegion];
+    [self.locationManager startMonitoringForRegion:region];
+    [self.locationManager stopRangingBeaconsInRegion:region];
+    [self.locationManager startRangingBeaconsInRegion:region];
+    
+    //once login, go to main view directly
+    NSString *token = [[CommonDataManager sharedInstance] accessToken];
+    if (token != nil) {
+        UIStoryboard  *st = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        self.window.rootViewController = [st instantiateViewControllerWithIdentifier:@"WHTabBarController"];
+    }
     
     
+// local noti test pupose.
+//    NSDate *alertTime = [[NSDate date]
+//                         dateByAddingTimeInterval:1];
+//    UIApplication* app = [UIApplication sharedApplication];
+//    UILocalNotification* notifyAlarm = [[UILocalNotification alloc]
+//                                        init];
+//    if (notifyAlarm)
+//    {
+//        notifyAlarm.fireDate = alertTime;
+//        notifyAlarm.timeZone = [NSTimeZone defaultTimeZone];
+//        notifyAlarm.alertBody = @"Staff meeting in 30 minutes";
+//        [app scheduleLocalNotification:notifyAlarm];
+//    }
     
-    //once signup forward to the venueView
     
+
     return YES;
 }
 
 #pragma mark - Local notification delegate
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-
 {
-//    if (notification) {
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-//        LocalNotiViewController   *localNotiVC = [storyboard instantiateViewControllerWithIdentifier:@"LocalNotiViewController"];
-//        [self.window.rootViewController presentViewController:localNotiVC animated:YES completion:nil];
-        
+        [[UIApplication sharedApplication] cancelLocalNotification:notification];
+
+    //    if ([[notification alertBody] isEqualToString:@"Enter"]) {
+
         LocalNotiView *localView = [[[NSBundle mainBundle] loadNibNamed:@"LocalNotiView" owner:self options:nil] objectAtIndex:0];
         localView.center = self.window.rootViewController.view.center;
-        [self.window.rootViewController.view addSubview:localView];
-
+        [localView setup];
+        [localView showInView:self.window.rootViewController.view  animated:YES];
+//      [self.window.rootViewController.view addSubview:localView];
+        
 //    }
-    
-    
-    
+
 }
 #pragma mark - Remote notification delegate
 //Present Remote notification view
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-
     
-    NSLog(@"Remote noti userInfo  ==>  %@", userInfo);
+    
     RemoteNotiView *remoteView = [[[NSBundle mainBundle] loadNibNamed:@"RemoteNotiView" owner:self options:nil] objectAtIndex:0];
-      remoteView.center = self.window.rootViewController.view.center;
+    remoteView.center = self.window.rootViewController.view.center;
     [remoteView setupView];
-      [self.window.rootViewController.view addSubview:remoteView];
+    [self.window.rootViewController.view addSubview:remoteView];
     
 }
 
@@ -126,7 +114,6 @@
 //Sending token to the server
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
 
-    // Device token registration for APNS
     NSMutableString *token = [NSMutableString string];
     const unsigned char* ptr = (const unsigned char*) [newDeviceToken bytes];
     
@@ -135,17 +122,16 @@
         [token appendFormat:@"%02x", ptr[i]];
     }
 
-    
     if ([[CommonDataManager sharedInstance] accessToken] != nil) {
         [[CommonDataManager sharedInstance] setAPNStoken:token withParam:@"Y"];
         NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken], @"token":token};
-        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] apnUpdate:params completion:^(NSDictionary *result, NSError *error) {
+        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] apnUpdate:params
+                                                              completion:^(NSDictionary *result, NSError *error) {
             if (result[@"success"]) {
                 NSLog(@" apns updated in delegation");
             }
         }];
-        
-    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+//    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     } else  {
         [[CommonDataManager sharedInstance] setAPNStoken:token withParam:@"N"];
     }
@@ -155,94 +141,80 @@
     
 }
 
-
-#pragma mark - ESTBeaconManager delegate
-- (void)beaconManager:(ESTBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region
+#pragma mark - BeaconManager delegate
+- (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
 {
-  //  NSLog(@" beacon  %ld", [beacons count]  );
-    
-    if([beacons count] > 0 ) {
-        
-        ESTBeacon  *beacon = beacons[0];
-        
-        self.major = [NSString stringWithFormat:@"%@", beacon.major];
-        self.minor = [NSString stringWithFormat:@"%@", beacon.minor];
-  
-        NSDictionary *ibeacon  = @{@"major": self.major, @"minor":self.minor};
-        [[CommonDataManager sharedInstance] setCurrentBeacon:ibeacon];
-       
+    if(state == CLRegionStateInside) {
+        NSLog(@"locationManager didDetermineState INSIDE for %@", region.identifier);
+    }
+    else if(state == CLRegionStateOutside) {
+        NSLog(@"locationManager didDetermineState OUTSIDE for %@", region.identifier);
+    }
+    else {
+        NSLog(@"locationManager didDetermineState OTHER for %@", region.identifier);
     }
 }
--(void)beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(ESTBeaconRegion *)region {
-//    
-//    NSLog(@"  %s", __func__);
-//    
-//    if(state == CLRegionStateInside) {
-//        NSLog(@"locationManager didDetermineState INSIDE Major(%@) Minor(%@)", region.major, region.minor);
-//    }
-//    else if(state == CLRegionStateOutside) {
-//        NSLog(@"locationManager didDetermineState OUTSIDE Major(%@) Minor(%@)", region.major, region.minor);
-//    }
-//    else {
-//        NSLog(@"locationManager didDetermineState OTHER Major(%@) Minor(%@)", region.major, region.minor);
-//    }
-//    
+
+- (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
+{
+//    NSLog(@" %s", __func__);
+//    NSLog(@" beaco count ==>  %ld", [beacons count]);
     
+    if ([beacons count]) {
+        CLBeacon  *bea = beacons[0];
+        self.major = [NSString stringWithFormat:@"%@", bea.major];
+        self.minor = [NSString stringWithFormat:@"%@", bea.minor];
+
+        NSDictionary *ibeacon  = @{@"major": self.major, @"minor":self.minor};
+        [[CommonDataManager sharedInstance] setCurrentBeacon:ibeacon];
+    }
 }
 
-//success, data,,
-- (void)beaconManager:(ESTBeaconManager *)manager didEnterRegion:(ESTBeaconRegion *)region
-{
-//    NSLog(@" %s ,major ->   %@, minor -> %@", __func__ , region.major, region.minor);
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region  {
+
     
-
     UILocalNotification *notification = [UILocalNotification new];
-    notification.alertBody = @"Enter";
+    notification.applicationIconBadgeNumber++;
+    notification.alertBody = [@"Enter(" stringByAppendingFormat:@" %@, %@)", self.major, self.minor];
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-
-//    self.major = [NSString stringWithFormat:@"%@", region.major];
-//    self.minor = [NSString stringWithFormat:@"%@", region.minor];
 
     
     if([[CommonDataManager sharedInstance] accessToken] != nil)  {
 
         self.major = [[CommonDataManager sharedInstance] currentBeacon][@"major"];
         self.minor = [[CommonDataManager sharedInstance] currentBeacon][@"minor"];
-        
-        NSString *beaconKey = [@"B9407F30-F5F8-466E-AFF9-25556B57FE6D" stringByAppendingFormat:@"%@%@", self.major, self.minor];
-        NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken],@"beacon_key":beaconKey};
-        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] enterVenue:params completion:^(NSDictionary *result, NSError *error) {
 
+        NSString *beaconKey = [@"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6" stringByAppendingFormat:@"%@%@", self.major, self.minor];
+        NSLog(@" beaon key(enter) %@", beaconKey);
+        
+        NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken],@"beacon_key":beaconKey};
+        [[WHHTTPClient sharedClient] enterVenue:params completion:^(NSDictionary *result, NSError *error) {
             if(result[@"success"])
                 NSLog(@" update enter server");
         }];
-        
-        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     }
 }
 
-
-- (void)beaconManager:(ESTBeaconManager *)manager didExitRegion:(ESTBeaconRegion *)region
-{
-    NSLog(@" %s", __func__);
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region  {
     
     UILocalNotification *notification = [UILocalNotification new];
-    notification.alertBody = @"Exit";
+    self.major = [[CommonDataManager sharedInstance] currentBeacon][@"major"];
+    self.minor = [[CommonDataManager sharedInstance] currentBeacon][@"minor"];
+    notification.alertBody = [@"Exit(" stringByAppendingFormat:@" %@, %@)", self.major, self.minor];
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 
-    
+    NSString *beaconKey = [@"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6" stringByAppendingFormat:@"%@%@", self.major, self.minor];
+      NSLog(@" beaon key(exit) %@", beaconKey);
     if ([[CommonDataManager sharedInstance] accessToken] != nil) {
-
+        
         NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken]};
         NSURLSessionTask  *task = [[WHHTTPClient sharedClient] leaveVenue:params completion:^(NSDictionary *result, NSError *error) {
-        if (result[@"succcess"]) {
-            NSLog(@" update leave server");
-        }
-     
-    }];
-    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+            if (result[@"succcess"]) {
+                NSLog(@" update leave server");
+            }
+        }];
+//     [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     }
-    
 }
 
 #pragma mark - app delegate
@@ -255,21 +227,29 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    NSLog(@" %s" , __func__);
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+    NSArray *arrayOfLocalNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications] ;
+    for (UILocalNotification *localNotification in arrayOfLocalNotifications) {
+///      NSLog(@"the notification: %@", localNotification);
+        localNotification.applicationIconBadgeNumber= application.applicationIconBadgeNumber+1;
+    }
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     NSLog(@" %s" , __func__);
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+//    int badgeCount = (int)[UIApplication sharedApplication].applicationIconBadgeNumber;
+//    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+//    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+//    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeCount];
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@" %s" , __func__);
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

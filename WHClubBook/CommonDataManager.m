@@ -34,15 +34,17 @@ static CommonDataManager *_sharedInstance = nil;
 
 -(void)setSignUpParameters: (NSArray *) values{
     
-     self.signUp =  @{@"user[email]":values[0],
-                                @"user[gender]":values[1],
-                                @"user[birthday]":values[2],
-                                @"user[first_name]":values[3],
-                                @"user[last_initial]":values[4]};
+     self.signUp =  @{      @"user[email]":values[0],
+                           @"user[gender]":values[1],
+                         @"user[birthday]":values[2],
+                       @"user[first_name]":values[3],
+                     @"user[last_initial]":values[4]};
     
     NSLog(@" sign  %@", self.signUp);
 
 }
+
+
 
 -(NSDictionary*) signupParameters {
     

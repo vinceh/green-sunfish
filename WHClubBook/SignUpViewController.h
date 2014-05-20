@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WHHTTPClient.h"
 #import "AppDelegate.h"
-#import "UIAlertView+AFNetworking.h"
+//#import "UIAlertView+AFNetworking.h"
 #import "UIAlertView+Blocks.h"
 #import "CommonDataManager.h"
 

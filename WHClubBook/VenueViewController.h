@@ -11,14 +11,16 @@
 #import "VenueDetailedViewController.h"
 #import "VenueTableViewCell.h"
 #import "WHHTTPClient.h"
-#import "UIAlertView+AFNetworking.h"
+//#import "UIAlertView+AFNetworking.h"
 #import  "VenueTableView.h"
-#import "SlideNavigationController.h"
 #import "CommonDataManager.h"
 #import "UIImageView+AFNetworking.h"
+#import "Util.h"
 
 
 
-@interface VenueViewController : UIViewController<UITableViewDataSource, UITableViewDelegate,SlideNavigationControllerDelegate>
+@interface VenueViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+
+-(void) reloadView;
 
 @end

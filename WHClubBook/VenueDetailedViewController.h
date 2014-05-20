@@ -14,5 +14,4 @@
 @interface VenueDetailedViewController : UIViewController<UIScrollViewDelegate>
 @property (strong, nonatomic) NSDictionary  *venueInfo;
 @property (strong, nonatomic) NSString      *meter;
-@property (strong, nonatomic) CLLocation *venueLocation;
 @end

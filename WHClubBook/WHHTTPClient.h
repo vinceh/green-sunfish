@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "AFHTTPSessionManager.h"
 #import "CommonDataManager.h"
+#import "WHResponseSerializer.h"
+//#import "AFURLResponseSerialization.h"
+
+
 
 @interface WHHTTPClient : AFHTTPSessionManager
 
@@ -24,6 +28,9 @@
 - (NSURLSessionDataTask *)profile:(NSDictionary*)params completion:( void (^)(NSDictionary *result, NSError *error) )completion;
 - (NSURLSessionDataTask *)lottery:(NSDictionary*)params completion:( void (^)(NSDictionary *result, NSError *error) )completion;
 - (NSURLSessionDataTask *)apnUpdate:(NSDictionary*)params completion:( void (^)(NSDictionary *result, NSError *error) )completion;
+- (NSURLSessionDataTask *)addFavoriteVenue:(NSDictionary*)params completion:( void (^)(NSDictionary *result, NSError *error) )completion;
+- (NSURLSessionDataTask *)removeFavoriteVenue:(NSDictionary*)params completion:( void (^)(NSDictionary *result, NSError *error) )completion;
+
 
 @end
 

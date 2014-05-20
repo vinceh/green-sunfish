@@ -23,8 +23,7 @@ static Util *_sharedInstance = nil;
     return sharedInstance;
 }
 
-
--(NSString *)dataFilePath:(NSString*)name  {
+-(NSString *)filePath:(NSString*)name  {
     
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -33,7 +32,54 @@ static Util *_sharedInstance = nil;
 }
 
 
+-(NSMutableArray*)retrieveFromFile:(NSString*)fileName
+{
+	NSString *filePath = [self filePath:fileName];
+    
+	if( [[NSFileManager defaultManager]fileExistsAtPath:filePath] )
+	{
+		NSMutableArray *array	= [[NSMutableArray alloc] initWithContentsOfFile:filePath];
+		return array;
+	}
+    
+	return NULL;
+}
+
+-(void)writeToFile:(NSString*)fileName fileData:(NSArray*)data
+{
+	[data writeToFile:[self filePath:fileName ] atomically:YES];
+    
+    NSLog(@" my venue saved : %@", data);
+    
+    [self retrieveFromFile:@"myVenueList.dat"];
+}
+
+
+
 
 
 
 @end
+
+//
+//
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsDirectory = [paths objectAtIndex:0];
+//    //2) Create the full file path by appending the desired file name
+//    NSString *yourArrayFileName = [documentsDirectory stringByAppendingPathComponent:@"example.dat"];
+//
+//    //Load the array
+//    NSMutableArray *yourArray = [[NSMutableArray alloc] initWithContentsOfFile: yourArrayFileName];
+//    if(yourArray == nil)
+//    {
+//        //Array file didn't exist... create a new one
+//        yourArray = [[NSMutableArray alloc] initWithCapacity:10];
+//        
+//        //Fill with default values
+//    }
+//    ...
+//    //Use the content
+//    ...
+//    //Save the array
+//    [yourArray writeToFile:yourArrayFileName atomically:YES];
+

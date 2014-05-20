@@ -10,6 +10,9 @@
 
 @interface PeopleViewController ()
 
+@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+
 @end
 
 @implementation PeopleViewController
@@ -23,24 +26,47 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [self.navigationItem setHidesBackButton:YES animated:YES];
+    
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    
+    self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [self.flowLayout setItemSize:CGSizeMake(100, 100)];
+    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    self.flowLayout.minimumInteritemSpacing = 1;
+    self.flowLayout.minimumLineSpacing = 6;
+    self.flowLayout.sectionInset = UIEdgeInsetsMake(10, 5, 10, 5);
+    [self.collectionView setBounces:NO];
+    
+    [self.collectionView setCollectionViewLayout:self.flowLayout];
 }
 
+-(void) reloadView {
+    
+    NSLog(@" %s", __func__);
+    
+    
+}
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section;
 {
-    return 32;
+    return 36;
 }
+
+
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
+    
     PeopleCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"peopleCell" forIndexPath:indexPath];
     
 //  NSString *imageToLoad = [NSString stringWithFormat:@"%ld.JPG",indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"image2.jpg"];
-    
+    cell.layer.cornerRadius = 10.0f;
     return cell;
 }
 
@@ -50,7 +76,6 @@
     if ([[segue identifier] isEqualToString:@"detailSegue"])
     {
 //        NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
-        
 //        NSString *imageNameToLoad = [NSString stringWithFormat:@"%ld_full", selectedIndexPath.row];
         NSString *pathToImage = [[NSBundle mainBundle] pathForResource:@"image2"ofType:@"jpg"];
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:pathToImage];
@@ -65,6 +90,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 /*
  #pragma mark - Navigation

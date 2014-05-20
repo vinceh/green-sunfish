@@ -1,18 +1,18 @@
 //
-//  ChatViewController.m
+//  MeLotteryViewController.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 24..
+//  Created by yong choi on 2014. 5. 16..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
-#import "ChatViewController.h"
+#import "MeLotteryViewController.h"
 
-@interface ChatViewController ()
+@interface MeLotteryViewController ()
 
 @end
 
-@implementation ChatViewController
+@implementation MeLotteryViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -23,23 +23,12 @@
     return self;
 }
 
--(void) reloadView {
-    
-    NSLog(@" %s" , __func__);
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     // Do any additional setup after loading the view.
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-//  //  [self.tabBarController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]]];
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

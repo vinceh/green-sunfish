@@ -1,14 +1,14 @@
 //
-//  EditViewController.m
+//  EditProfileViewController.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 25..
+//  Created by yong choi on 2014. 5. 16..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
-#import "EditViewController.h"
+#import "EditProfileViewController.h"
 
-@interface EditViewController ()
+@interface EditProfileViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -17,7 +17,7 @@
 
 static NSString *cellIdentifier = @"com.whispr.editTableCell ";
 
-@implementation EditViewController
+@implementation EditProfileViewController
 
 - (void)viewDidLoad
 {
@@ -36,8 +36,8 @@ static NSString *cellIdentifier = @"com.whispr.editTableCell ";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-        UITableViewCell    *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-        
+    UITableViewCell    *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    
     
     return cell;
     

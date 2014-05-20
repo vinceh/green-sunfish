@@ -2,7 +2,6 @@
 //  SignUpViewController.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 19..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
@@ -11,42 +10,39 @@
 
 
 @interface SignUpViewController () {
-    
-    UITableViewCell *cell;
+    UITextField  *emptyTextField;
 }
 
-@property(nonatomic,weak) UITextField  *firstname;
-@property(nonatomic,weak) UITextField  *lastname;
-@property(nonatomic,weak) UITextField  *email;
-@property(nonatomic,weak) UITextField  *birthday;
-@property(nonatomic,weak) UITextField  *gender;
-@property(nonatomic,weak) NSString     *genderForServer;
+@property(nonatomic,weak)   UITextField  *firstname;
+@property(nonatomic,weak)   UITextField  *lastname;
+@property(nonatomic,weak)   UITextField  *email;
+@property(nonatomic,weak)   UITextField  *birthday;
+@property(nonatomic,weak)   UITextField  *gender;
+@property(nonatomic,weak)   NSString     *genderForServer;
 
 @property(nonatomic,strong) UIButton     *registerButton;
 @property(nonatomic,strong) UIDatePicker *datePicker;
 @property(nonatomic,strong) UIPickerView *picker;
 @property(nonatomic,strong) UIToolbar    *toolbar;
 @property(nonatomic,strong) UITextField  *activeTextField;
-@property(nonatomic,strong) NSString  *response;
+@property(nonatomic,strong) NSString     *response;
 
-@property (weak, nonatomic) IBOutlet UIButton *signUpButton;
-@property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (nonatomic,weak) IBOutlet UIButton *signUpButton;
+@property (nonatomic,weak) IBOutlet UITableView *tableview;
+
+- (IBAction)back:(id)sender;
 
 @end
 
-
+static NSString  *SignUpTableViewCellIdentifier = @"com.whispr.signUpTableCell";
 @implementation SignUpViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.title = @"Sign Up";
-    [self.tableview registerClass:[UITableViewCell class] forCellReuseIdentifier:@"com.whispr.signUpTableCell"];
-//    self.tableview.layer.borderColor =[[UIColor blackColor]CGColor];
-//    self.tableview.layer.borderWidth= 1.0f;
-    //
-   // self.signUpButton.enabled = NO;
+    [self.tableview registerClass:[UITableViewCell class] forCellReuseIdentifier:SignUpTableViewCellIdentifier];
+
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
     UISegmentedControl *leftItems = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@" < ", @" > ", nil]];
     [leftItems setEnabled:YES forSegmentAtIndex:0];
@@ -69,35 +65,25 @@
     self.picker = [[UIPickerView alloc] init];
     self.picker.delegate = self;
     self.picker.showsSelectionIndicator = YES;
-    
-    
-
 }
 
 #pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return  7;
+    return  4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    static NSString *CellIdentifier = @"com.whispr.signUpTableCell";
-    
-    cell = [tableView
-                             dequeueReusableCellWithIdentifier:CellIdentifier
-                             forIndexPath:indexPath];
-    
+
+   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SignUpTableViewCellIdentifier
+                                           forIndexPath:indexPath];
+            
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.layer.cornerRadius = 10.0f;
     cell.textLabel.textColor = [UIColor blackColor];
+    
+    
     
     if (indexPath.row == 0) {
         self.firstname = [self textFieldFactory:@"First name"];
@@ -132,12 +118,23 @@
         [cell.contentView addSubview:self.gender];
     }
     
-    return cell;
+    NSDictionary  *signUpParams = [[CommonDataManager sharedInstance] signupParameters];
     
+    if (signUpParams != nil) {
+
+        self.firstname.text = signUpParams[@"user[first_name]"];
+        self.lastname.text =signUpParams[@"user[last_initial]"];
+        self.email.text    = signUpParams[@"user[email]"];
+        self.birthday.text = signUpParams[@"user[birthday]"];
+        self.gender.text  = signUpParams[@"user[gender]"];
+        
+    }
+    
+    return cell;
+
 }
 
 #pragma mark- textfield delegations
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     _activeTextField = textField;
     textField.layer.borderColor = [UIColor redColor].CGColor;
@@ -159,9 +156,7 @@
     return YES;
 }
 
-
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    
     
         if(textField == self.email)  {
             BOOL validForm  = [self validateEmailWithString:self.email.text];
@@ -172,7 +167,7 @@
     
         if(textField ==self.birthday)  {
             NSTimeInterval today    = [[NSDate date] timeIntervalSince1970];
-            NSTimeInterval birthday     = [self.datePicker.date timeIntervalSince1970];
+            NSTimeInterval birthday = [self.datePicker.date timeIntervalSince1970];
             if(birthday > today)  {
                 [self alertView:@"Invalid birthday" withParam1:@"cannot greater than today" withParam2:textField];
             }
@@ -180,10 +175,7 @@
         }
 }
 
-
-
 #pragma mark - UIPickerViewDataSource
-
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1;
@@ -311,8 +303,6 @@
         self.view.frame = rect;
         
     } completion:nil];
-    
-    
 }
 
 - (IBAction) dateValueChanged:(id)sender{
@@ -330,57 +320,49 @@
 
 -(BOOL) checkTextFieldFilled {
     
-    UITextField  *emptyTextField;
-    
     if([self.firstname.text length] == 0 ||
        [self.lastname.text length]  == 0 ||
        [self.email.text length] == 0  ||
        [self.birthday.text  length] == 0 ||
        [self.gender.text length] == 0){
                                              
-        [self alertView:@"Empty field" withParam1:@"Pleas fill all the fields" withParam2:emptyTextField];
+     [self alertView:@"Empty field" withParam1:@"Pleas fill all the fields" withParam2:emptyTextField];
         return NO;
     }
     
     self.genderForServer = ([self.gender.text isEqualToString:@"Male"]) ? @"M" : @"F";
+    NSArray  *values = @[self.email.text,
+                         self.genderForServer,
+                         self.birthday.text,
+                         self.firstname.text,
+                         self.lastname.text];
     
+    [[CommonDataManager sharedInstance] setSignUpParameters:values];
     return YES;
 }
 
+
+#pragma  mark - navigation
+- (IBAction)back:(id)sender {
+     [self performSegueWithIdentifier:@"launchViewSegue" sender:self];
+}
 
 -(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender  {
-   
     
-    if ([identifier isEqualToString:@"photoSegue"]) {
-        return [self checkTextFieldFilled];
+    if ([identifier isEqualToString:@"photoViewSegue"]) {
+        return [self checkTextFieldFilled] ? YES : NO;
     }
-    return YES;
     
+    return YES;
 }
 
-
-
-#pragma mark - cloud integration
-//
-//- (IBAction)register:(id)sender {
-//    
-//    NSArray  *values = @[self.email.text, self.gender.text, self.birthday.text, self.firstname.text, self.lastname.text];
-//    [[CommonDataManager sharedInstance] setSignUpParameters:values];
-//}
-
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender  {
-    NSArray  *values = @[self.email.text, self.genderForServer, self.birthday.text, self.firstname.text, self.lastname.text];
-    [[CommonDataManager sharedInstance] setSignUpParameters:values];
-}
-
-
--(void) alertView:(NSString*) title  withParam1:(NSString*) msg  withParam2:(UITextField*) textField {
+-(void) alertView:(NSString*) title withParam1:(NSString*) msg  withParam2:(UITextField*) textField {
 
      [UIAlertView showWithTitle:title
-                           message:msg
-                 cancelButtonTitle:@"Cancel"
-                 otherButtonTitles:@[@"OK"]
-                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                        message:msg
+              cancelButtonTitle:nil
+              otherButtonTitles:@[@"OK"]
+                       tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                               if (buttonIndex == [alertView cancelButtonIndex]) {
                                   [textField becomeFirstResponder];
                               }else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"OK"]) {
@@ -394,7 +376,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 @end
 

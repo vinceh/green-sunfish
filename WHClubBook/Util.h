@@ -10,4 +10,11 @@
 
 @interface Util : NSObject
 
+
++(instancetype)sharedInstance;
+-(NSString *)filePath:(NSString*)name;
+-(NSMutableArray*)retrieveFromFile:(NSString*)fileName;
+-(void)writeToFile:(NSString*)fileName fileData:(NSArray*)data;
+
+
 @end

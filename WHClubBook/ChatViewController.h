@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SlideNavigationController.h"
 
 
-@interface ChatViewController : UIViewController<SlideNavigationControllerDelegate>
+@interface ChatViewController : UIViewController
 
+-(void) reloadView;
 @end

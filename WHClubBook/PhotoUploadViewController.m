@@ -2,23 +2,23 @@
 //  PhotoUploadViewController.m
 //  WHClubBook
 //
-//  Created by yong choi on 2014. 4. 24..
 //  Copyright (c) 2014년 whispr. All rights reserved.
 //
 
 #import "PhotoUploadViewController.h"
 
 @interface PhotoUploadViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *photoView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (nonatomic,weak) IBOutlet UIImageView *photoView;
+@property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, assign) BOOL viewVisible;
-- (IBAction)register:(id)sender;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+
+- (IBAction)register:(id)sender;
 - (IBAction)takePic:(id)sender;
 - (IBAction)selectPic:(id)sender;
 - (IBAction)cancel:(id)sender;
-
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+- (IBAction)back:(id)sender;
 
 
 @end
@@ -26,21 +26,7 @@
 @implementation PhotoUploadViewController
 
 
-//-(void) viewDidAppear:(BOOL)animated  {
-//    
-//     [self performSelector:@selector(showcamera) withObject:nil afterDelay:0.3];
-//}
-//
-//- (void)showcamera {
-//    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-//    [imagePicker setDelegate:self];
-//    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-//    [imagePicker setAllowsEditing:YES];
-//    
-//    [self presentViewController:imagePicker animated:YES completion:nil];
-//}
-
-
+#pragma mark- UIViewController delgate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,8 +40,10 @@
     [self.photoView  addGestureRecognizer:singleTap];
     [self.photoView  setUserInteractionEnabled:YES];
 
+    self.activityIndicator.center = self.photoView.center;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fireVenueView:) name:@"didRegisterSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goBack:) name:@"didRegisterDup" object:nil];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goBack:) name:@"didRegisterDup" object:nil];
 }
 
 
@@ -87,12 +75,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (void) imageTapped:(id) sender {
 
@@ -102,6 +84,12 @@
 - (IBAction)cancel:(id)sender {
     [self hideShowMenu];
 }
+
+- (IBAction)back:(id)sender {
+    
+    [self performSegueWithIdentifier:@"backSignUp" sender:nil];
+}
+
 
 - (IBAction)takePic:(id)sender {
     
@@ -130,6 +118,8 @@
     }
 }
 
+
+
 -(void) hideShowMenu {
     float originalY;
     
@@ -150,6 +140,7 @@
     }];
 }
 
+
 - (IBAction)register:(id)sender {
 
     if (self.photoView.image == nil) {
@@ -159,7 +150,8 @@
     [self.activityIndicator startAnimating];
 
     NSDictionary *params = [[CommonDataManager sharedInstance] signupParameters];
-    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params completion:^(NSString *result, NSError *error) {
+    NSURLSessionTask  *task = [[WHHTTPClient sharedClient] signUp:params
+                                                       completion:^(NSString *result, NSError *error) {
         
         if(!error) {
             NSString *response = result;
@@ -167,50 +159,54 @@
         }
     }];
     
-    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-
+ //   [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
 }
+
 
 
 -(void)fireVenueView:(id)sender  {
-    [self apnsUpdate];
+   [self apnsUpdate];
     [self.activityIndicator stopAnimating];
+    
     UIStoryboard  *st = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    VenueViewController  *venueVC = [st instantiateViewControllerWithIdentifier:@"VenueViewController"];
-    [self.navigationController pushViewController:venueVC animated:YES];
-    
-}
+    UIWindow  *window = [UIApplication sharedApplication].keyWindow;
+    window.rootViewController = [st instantiateViewControllerWithIdentifier:@"WHTabBarController"];
 
--(void) goBack:(id)sender  {
-    [self.activityIndicator stopAnimating];
-    [self.navigationController popViewControllerAnimated:YES];
-    
 }
-
 
 -(void) apnsUpdate  {
     
-    NSDictionary  *apnsDic = [[CommonDataManager sharedInstance] accessAPNStoken];
+    NSDictionary  *apnsDic     = [[CommonDataManager sharedInstance] accessAPNStoken];
     NSString      *accessToken = [[CommonDataManager sharedInstance] accessToken];
     
     if([apnsDic[@"update"] isEqualToString:@"N"] && accessToken != nil)  {
-
-        NSDictionary *params = @{@"key":[[CommonDataManager sharedInstance] accessToken], @"token":apnsDic[@"key"]};
-        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] apnUpdate:params completion:^(NSDictionary *result, NSError *error) {
+        NSDictionary    *params = @{@"key":[[CommonDataManager sharedInstance] accessToken], @"token":apnsDic[@"key"]};
+        NSURLSessionTask  *task = [[WHHTTPClient sharedClient] apnUpdate:params
+                                                              completion:^(NSDictionary *result, NSError *error) {
             
             if (result[@"success"]) {
                 NSLog(@" apns updated in regisger..");
             }
         }];
-        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+        
+//        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     }
 
 }
 
--(void) dealloc  {
+- (void)didReceiveMemoryWarning
+{
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
+
+
+
+-(void) dealloc {
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 //- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 //{
 //    NSLog(@" %s", __func__);
